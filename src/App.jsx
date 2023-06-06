@@ -1,10 +1,28 @@
-import "./index.css";
+import { Route, Routes } from "react-router-dom"
+import "src/index.css"
+import AuthContextProvider from "src/contexts/AuthContext"
+import Signin from "src/components/SignIn"
+import Home from "src/components/Home"
+import NavBar from "src/components/NavBar"
+import Info from "src/components/Info"
+import Protected from "src/components/Protected"
 
 const App = () => {
   return (
-    <div className="app flex justify-center items-center mt-4">
-      <h1 className="text-2xl">EcoBees Work Log Management System</h1>
-    </div>
+    <AuthContextProvider>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route
+          path="/info"
+          element={
+            <Protected>
+              <Info />
+            </Protected>}
+        />
+      </Routes>
+    </AuthContextProvider>
   )
 }
 
