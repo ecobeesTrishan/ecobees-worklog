@@ -4,8 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="shortcut icon" href="public/logo.svg" type="image/x-icon">
-  <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fdb517" />
+  <meta name="description" content="EcoBees Work Log Management System" />
+  <link rel="apple-touch-icon" href="public/logo.svg">
+  <link rel="manifest" href="./manifest.json">
   <title>EcoBees Work Log Management System</title>
 </head>
 
@@ -14,7 +17,11 @@
   <script type="module" src="/src/main.jsx"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./serviceWorker.js')
+          .then((reg) => console.log("Success: ", reg.scope))
+          .catch((err) => console.log("Failure:", err))
+      })
     }
   </script>
 </body>
