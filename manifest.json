@@ -1,8 +1,6 @@
 {
-  "name": "EcoBees Work Log Management System",
   "short_name": "EcoBees",
-  "start_url": "/",
-  "scope": ".",
+  "name": "EcoBees Work Log Management System",
   "icons": [
     {
       "src": "src/assets/manifest-icon-192.maskable.png",
@@ -29,8 +27,9 @@
       "purpose": "maskable"
     }
   ],
-  "display": "fullscreen",
-  "orientation": "portrait",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
   "theme_color": "#fdb517",
   "background_color": "#ffffff"
 }
