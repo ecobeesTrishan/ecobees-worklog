@@ -1,6 +1,6 @@
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { Navigate } from "react-router-dom"
-import { AuthContext } from "src/contexts/AuthContext"
+import { AuthContext } from "contexts/AuthContext"
 
 const Protected = ({ children }) => {
     const userContext = useContext(AuthContext)

@@ -20,8 +20,7 @@ const AuthContextProvider = ({ children }) => {
 
                 if (email.endsWith(eligibleDomain)) {
                     console.log("Eligible Domain")
-                }
-                else {
+                } else {
                     console.log("Domain is not eligible")
                     signOut(auth)
                     deleteUser(user)
@@ -39,9 +38,7 @@ const AuthContextProvider = ({ children }) => {
             setUser(currentUser)
         })
 
-        return () => {
-            unsubscribe()
-        }
+        return () => unsubscribe()
     }, [])
 
 

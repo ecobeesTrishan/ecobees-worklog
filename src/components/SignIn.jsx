@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import { GoogleButton } from "react-google-button"
-import { AuthContext } from "src/contexts/AuthContext"
+import { AuthContext } from "contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
 
 const Signin = () => {
@@ -24,7 +24,9 @@ const Signin = () => {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="py-8 text-3xl font-bold text-center font-primary">Sign in</h1>
+            <h1 className="py-8 text-3xl font-bold text-center font-primary">
+                Sign in
+            </h1>
 
             <div className="max-w-[240px] m-auto">
                 <GoogleButton onClick={handleGoogleSignIn} />
@@ -32,13 +34,11 @@ const Signin = () => {
 
             {domainError
                 &&
-                <p
-                    className="my-6 font-bold font-primary text-rose-600"
-                >
+                <p className="my-6 font-bold font-primary text-rose-600">
                     Invalid email address, only email address with {eligibleDomain} domain can be registered.
                 </p>
             }
         </div>
     )
 }
-export default Signin;
+export default Signin
