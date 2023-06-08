@@ -1,6 +1,5 @@
-import Pause from "./Pause"
-import Reset from "./Reset"
-import Resume from "./Resume"
 import Start from "./Start"
+import Pause from "./Pause"
+import Resume from "./Resume"
 
-export { Pause, Reset, Resume, Start }
+export { Start, Pause, Resume }
