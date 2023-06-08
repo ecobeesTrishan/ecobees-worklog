@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Pause, Reset, Resume, Start } from "src/buttons"
+import { Pause, Resume, Start } from "src/buttons"
 import { Form } from "./StartWorkForm"
 
 const StopWatch = () => {
@@ -45,8 +45,6 @@ const StopWatch = () => {
                 {!timerOn && time === 0 && <Start onClick={() => setOpenModal(true)} />}
 
                 {timerOn && <Pause onClick={() => setTimerOn(false)} />}
-
-                {!timerOn && time > 0 && <Reset onClick={() => setTime(0)} />}
 
                 {!timerOn && time > 0 && <Resume onClick={() => setTimerOn(true)} />}
             </div>

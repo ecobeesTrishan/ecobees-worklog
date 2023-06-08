@@ -1,6 +1,8 @@
 import { useContext } from "react"
-import { AuthContext } from "contexts/AuthContext"
+import { query, where, onSnapshot, orderBy } from "firebase/firestore"
+import { colRef, } from "src/firebase"
 import StopWatch from "./StopWatch"
+import { AuthContext } from "contexts/AuthContext"
 
 const Info = () => {
     const userContext = useContext(AuthContext)
@@ -14,6 +16,17 @@ const Info = () => {
             console.log(error)
         }
     }
+
+    const firebaseQuery = user?.displayName && query(colRef, where("userId", "==", user.uid), orderBy("createdAt"))
+
+    user?.displayName && onSnapshot(firebaseQuery, (snapshot) => {
+        const allDocs = snapshot.docs
+        const tasks = []
+        allDocs.map((doc) => {
+            tasks.push({ ...doc.data(), id: doc.id })
+        })
+        console.log(tasks)
+    })
 
     return (
         <div className="flex flex-col items-center font-primary">
