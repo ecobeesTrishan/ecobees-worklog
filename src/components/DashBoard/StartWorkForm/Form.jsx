@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { colRef, projectsColRef } from "src/firebase"
 import { getWorkTypes } from "src/utils"
-import InputField from "./InputField"
-import SelectField from "./SelectField";
+import { InputField, SelectField } from "components/common"
 import formSchema from "./formSchema"
 import { AuthContext } from "contexts/AuthContext"
 
