@@ -13,6 +13,7 @@ const AuthContextProvider = ({ children }) => {
     const googleSignIn = () => {
         const provider = new GoogleAuthProvider()
         provider.setCustomParameters({ hd: 'ecobees.net' })
+
         signInWithPopup(auth, provider)
             .then((result) => {
                 const { user } = result
