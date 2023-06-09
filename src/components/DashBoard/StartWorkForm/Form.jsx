@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { colRef, projectsColRef } from "src/firebase"
 import { getWorkTypes } from "src/utils"
-import { InputField, SelectField } from "components/common"
+import { InputField, SelectField, CloseModal } from "components/common"
 import formSchema from "./formSchema"
 import { AuthContext } from "contexts/AuthContext"
 
@@ -48,26 +48,10 @@ const Form = ({ setOpenModal, setTimerOn }) => {
     return (
         <div className="fixed z-50 flex items-center w-[100vw] h-[100vh] justify-center overflow-x-hidden overflow-y-auto bg-gray-500 inset-0 bg-opacity-40 ">
             <div className="relative w-[40rem] pb-10 px-10 pt-6 rounded-md shadow-2xl m-auto bg-white border-gray-900/10 font-primary">
-                <button
-                    type="button"
+                <CloseModal
                     id="user-action-close-modal"
                     onClick={() => setOpenModal(false)}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="absolute right-0 mr-8 cursor-pointer w-7"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </svg>
-                </button>
+                />
 
                 <form
                     onSubmit={handleSubmit(handleFormSubmit)}
@@ -110,7 +94,6 @@ const Form = ({ setOpenModal, setTimerOn }) => {
                             Start Work
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>
