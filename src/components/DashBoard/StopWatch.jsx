@@ -1,25 +1,91 @@
 import { useState, useEffect } from "react"
-import { Pause, Resume, Start } from "src/buttons"
+import { Pause, Resume, Start, Submit } from "src/buttons"
 import { Form } from "./StartWorkForm"
+import { db } from "src/firebase"
+import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
+
+const stopwatchDocRef = doc(collection(db, 'stopwatche'), 'stopwatchTime');
+const submittedStopWatchDocRef = doc(collection(db, 'stopwatchSaved'), 'stopwatchTime');
 
 const StopWatch = () => {
-    const [time, setTime] = useState(0)
-    const [timerOn, setTimerOn] = useState(false)
+    const [timer, setTimer] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [, setStartTime] = useState(0);
     const [openModal, setOpenModal] = useState(false)
 
     useEffect(() => {
-        let interval = null
-
-        if (timerOn) {
-            interval = setInterval(() => {
-                setTime((prevTime) => prevTime + 10)
-            }, 10)
-        } else if (!timerOn) {
-            clearInterval(interval)
+        const savedTimer = localStorage.getItem('stopwatchTimer');
+        if (savedTimer) {
+            setTimer(parseInt(savedTimer));
         }
 
-        return () => clearInterval(interval)
-    }, [timerOn])
+        const unsubscribe = onSnapshot(stopwatchDocRef, (docSnapshot) => {
+            if (docSnapshot.exists()) {
+                setTimer(docSnapshot.data().timer);
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isRunning) {
+            const interval = setInterval(() => {
+                setTimer((prevTimer) => prevTimer + 1);
+            }, 1000);
+
+            return () => {
+                clearInterval(interval);
+            };
+        }
+    }, [isRunning]);
+
+    const handleStart = () => {
+        setOpenModal(true)
+    };
+
+    const setTimerOn = () => {
+        if (!isRunning) {
+            setIsRunning(true);
+            setStartTime(Date.now() - timer * 1000);
+        }
+    }
+
+    const handlePause = () => {
+        setIsRunning(false);
+    };
+
+    const handleResume = () => {
+        setIsRunning(true);
+        setStartTime(Date.now() - timer * 1000);
+    };
+
+    const handleReset = () => {
+        setTimer(0);
+        setIsRunning(false);
+        setStartTime(0);
+    };
+
+    const formatTime = (time) => {
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const handleSubmit = () => {
+        setDoc(submittedStopWatchDocRef, { timer })
+        handleReset()
+    };
+
+    useEffect(() => {
+        localStorage.setItem('stopwatchTimer', timer.toString());
+        setDoc(stopwatchDocRef, { timer });
+    }, [timer]);
+
 
     return (
         <div className="relative flex flex-col items-center justify-center gap-6 my-10 font-primary">
@@ -29,24 +95,18 @@ const StopWatch = () => {
 
             <div className="flex text-5xl bold">
                 <span>
-                    {("0" + Math.floor((time / 3600000) % 24)).slice(-2)}:
-                </span>
-
-                <span>
-                    {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
-                </span>
-
-                <span>
-                    {("0" + Math.floor((time / 1000) % 60)).slice(-2)}
+                    {formatTime(timer)}
                 </span>
             </div>
 
             <div className="flex items-center justify-center gap-10">
-                {!timerOn && time === 0 && <Start onClick={() => setOpenModal(true)} />}
+                {!isRunning && timer === 0 && <Start onClick={handleStart} />}
 
-                {timerOn && <Pause onClick={() => setTimerOn(false)} />}
+                {isRunning && <Pause onClick={handlePause} />}
 
-                {!timerOn && time > 0 && <Resume onClick={() => setTimerOn(true)} />}
+                {!isRunning && timer > 0 && <Submit onClick={handleSubmit} />}
+
+                {!isRunning && timer > 0 && <Resume onClick={handleResume} />}
             </div>
 
             {openModal && <Form setOpenModal={setOpenModal} setTimerOn={setTimerOn} />}
