@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Pause, Resume, Start, Submit } from "src/buttons"
 import { Form } from "./StartWorkForm"
+import { PauseForm } from "./PauseWorkForm"
 import { db } from "src/firebase"
 import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
 
@@ -12,6 +13,7 @@ const StopWatch = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [, setStartTime] = useState(0);
     const [openModal, setOpenModal] = useState(false)
+    const [openPauseModal, setOpenPauseModal] = useState(false)
 
     useEffect(() => {
         const savedTimer = localStorage.getItem('stopwatchTimer');
@@ -54,7 +56,7 @@ const StopWatch = () => {
     }
 
     const handlePause = () => {
-        setIsRunning(false);
+        setOpenPauseModal(true)
     };
 
     const handleResume = () => {
@@ -110,6 +112,7 @@ const StopWatch = () => {
             </div>
 
             {openModal && <Form setOpenModal={setOpenModal} setTimerOn={setTimerOn} />}
+            {openPauseModal && <PauseForm setOpenPauseModal={setOpenPauseModal} setIsRunning={setIsRunning} />}
         </div>
     )
 }
