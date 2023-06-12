@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { query, where, onSnapshot, orderBy } from "firebase/firestore"
-import { colRef, } from "src/firebase"
+import { colRef } from "src/firebase"
 import StopWatch from "./StopWatch"
 import { AuthContext } from "contexts/AuthContext"
 

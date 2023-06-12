@@ -1,4 +1,4 @@
-const InputField = ({ label, id, register, errorMessage, name }) => {
+const InputField = ({ label, id, register, errorMessage, name, disabled, value }) => {
     return (
         <div className="sm:col-span-3">
             <label
@@ -12,8 +12,10 @@ const InputField = ({ label, id, register, errorMessage, name }) => {
                 <input
                     type="text"
                     id={id}
-                    className="block w-full rounded-[4px] border-0 py-[19px] h-9 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-inset focus:ring-[#2684FF] sm:text-sm sm:leading-6"
+                    className="block w-full capitalize rounded-[4px] border-0 py-[19px] h-9 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-inset focus:ring-[#2684FF] sm:text-sm sm:leading-6"
                     {...register(name)}
+                    disabled={disabled}
+                    value={value}
                 />
 
                 {errorMessage &&
