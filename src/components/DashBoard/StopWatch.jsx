@@ -2,10 +2,11 @@ import { useState, useEffect } from "react"
 import { Pause, Resume, Start, Submit } from "src/buttons"
 import { Form } from "./StartWorkForm"
 import { PauseForm } from "./PauseWorkForm"
+import { SubmitForm } from "./SubmitWorkForm"
 import { db } from "src/firebase"
 import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
 
-const stopwatchDocRef = doc(collection(db, 'stopwatche'), 'stopwatchTime');
+const stopwatchDocRef = doc(collection(db, 'stopwatch'), 'stopwatchTime');
 const submittedStopWatchDocRef = doc(collection(db, 'stopwatchSaved'), 'stopwatchTime');
 
 const StopWatch = () => {
@@ -14,6 +15,7 @@ const StopWatch = () => {
     const [, setStartTime] = useState(0);
     const [openModal, setOpenModal] = useState(false)
     const [openPauseModal, setOpenPauseModal] = useState(false)
+    const [openSubmitModal, setOpenSubmitModal] = useState(false)
 
     useEffect(() => {
         const savedTimer = localStorage.getItem('stopwatchTimer');
@@ -106,13 +108,15 @@ const StopWatch = () => {
 
                 {isRunning && <Pause onClick={handlePause} />}
 
-                {!isRunning && timer > 0 && <Submit onClick={handleSubmit} />}
+                {timer > 0 && <Submit onClick={() => setOpenSubmitModal(true)} />}
 
                 {!isRunning && timer > 0 && <Resume onClick={handleResume} />}
+
             </div>
 
             {openModal && <Form setOpenModal={setOpenModal} setTimerOn={setTimerOn} />}
             {openPauseModal && <PauseForm setOpenPauseModal={setOpenPauseModal} setIsRunning={setIsRunning} />}
+            {openSubmitModal && <SubmitForm setOpenSubmitModal={setOpenSubmitModal} handleFormSubmit={handleSubmit} />}
         </div>
     )
 }
