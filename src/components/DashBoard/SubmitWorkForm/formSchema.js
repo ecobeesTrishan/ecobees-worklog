@@ -17,6 +17,6 @@ const formSchema = yup.object().shape({
         .string()
         .required("PR/WP/Figma link is required")
         .min(5, "PR/WP/Figma link can't be less than 5 characters"),
-});
+})
 
-export default formSchema;
+export default formSchema

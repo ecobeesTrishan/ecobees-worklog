@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { query, where, onSnapshot, orderBy } from "firebase/firestore"
+import moment from "moment"
 import { colRef } from "src/firebase"
 import StopWatch from "./StopWatch"
 import { AuthContext } from "contexts/AuthContext"
@@ -17,15 +18,14 @@ const Info = () => {
         }
     }
 
-    const firebaseQuery = user?.displayName && query(colRef, where("userId", "==", user.uid), orderBy("createdAt"))
-
+    const firebaseQuery = user?.displayName && query(colRef, where("userId", "==", user.uid), where("status", "==", "in progress"), orderBy("createdAt"))
     user?.displayName && onSnapshot(firebaseQuery, (snapshot) => {
         const allDocs = snapshot.docs
         const tasks = []
         allDocs.map((doc) => {
             tasks.push({ ...doc.data(), id: doc.id })
         })
-        console.log(tasks)
+        tasks.length > 0 && console.log(tasks, moment((tasks[0].createdAt).toDate()).format("LLL"), "Trishan", moment().format("LLL"))
     })
 
     return (

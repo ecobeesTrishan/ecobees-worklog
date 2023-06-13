@@ -13,7 +13,8 @@ const CheckBox = ({ workType, register, errorMessage }) => {
                             <input
                                 type="checkbox"
                                 id={id}
-                                className="w-full capitalize accent-[#fdb517] rounded cursor-pointer focus:ring-[#fdb517]"
+                                required
+                                className="w-full peer capitalize accent-[#fdb517] rounded cursor-pointer focus:ring-[#fdb517]"
                                 {...register(name)}
                             />
                         </div>
@@ -33,10 +34,6 @@ const CheckBox = ({ workType, register, errorMessage }) => {
                     {errorMessage}
                 </p>
             }
-
-            <p className="invisible mt-2 text-sm text-red-600 peer-invalid:visible">
-                All checklists must be checked
-            </p>
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
-import "src/index.css"
 import AuthContextProvider from "contexts/AuthContext"
 import { NavBar, Home, Signin, Protected, Info } from "components"
+import "src/index.css"
 
 const App = () => {
   return (
@@ -31,4 +31,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App

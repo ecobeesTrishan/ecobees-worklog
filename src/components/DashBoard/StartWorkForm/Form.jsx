@@ -19,8 +19,8 @@ const getProjects = async () => {
 getProjects()
 
 const Form = ({ setOpenModal, setTimerOn }) => {
-    const [workType, setWorkType] = useState({})
-    const [projectName, setProjectName] = useState({})
+    const [workType, setWorkType] = useState(getWorkTypes()[0].value)
+    const [projectName, setProjectName] = useState(projectsList[0].value)
 
     const userContext = useContext(AuthContext)
     const { user } = userContext
@@ -29,7 +29,7 @@ const Form = ({ setOpenModal, setTimerOn }) => {
         addDoc(colRef, {
             projectName: projectName,
             ticketDetails: data.ticketDetails,
-            estimatedTime: parseInt(data.estimatedTime),
+            estimatedTime: `${parseInt(data.estimatedTime)} hours`,
             workType: workType,
             userId: user.uid,
             userEmail: user.email,

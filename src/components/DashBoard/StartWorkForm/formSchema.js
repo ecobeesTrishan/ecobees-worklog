@@ -9,6 +9,6 @@ const formSchema = yup.object().shape({
         .string()
         .required("Estimated time is required")
         .matches("^[0-9]", "Estimated Time can't contain any letters or special characters"),
-});
+})
 
-export default formSchema;
+export default formSchema

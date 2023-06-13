@@ -1,21 +1,20 @@
 import { useContext, useState } from "react"
-import { query, where, orderBy, getDocs } from "firebase/firestore"
+import { query, where, orderBy, getDocs, updateDoc, doc, collection, onSnapshot } from "firebase/firestore"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import moment from "moment"
+import { db, colRef } from "src/firebase"
 import formSchema from "./formSchema"
 import { InputField, CheckBox, CloseModal } from "components/common"
 import { AuthContext } from "contexts/AuthContext"
-import { colRef } from "src/firebase"
 
 const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
+    const [tasks, setTasks] = useState([])
+
     const userContext = useContext(AuthContext)
     const { user } = userContext
 
-    const [tasks, setTasks] = useState([])
-
-    const firebaseQuery = user?.displayName && query(colRef, where("userId", "==", user.uid), orderBy("createdAt"))
-
-
+    const firebaseQuery = user?.displayName && query(colRef, where("userId", "==", user.uid), where("status", "==", "in progress"), orderBy("createdAt"))
     const getTasks = async () => {
         const snapshot = await getDocs(firebaseQuery)
         const allDocs = snapshot.docs
@@ -32,9 +31,44 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
     })
 
     const submitForm = (data) => {
-        console.log(data)
         handleFormSubmit()
         setOpenSubmitModal(false)
+
+        const hoursBilled = []
+        const submittedStopWatchRef = collection(db, 'stopwatchSaved')
+        const docRef = doc(db, "tasks", tasks[0]?.id)
+        onSnapshot(submittedStopWatchRef, (snapshot) => {
+            const allDocs = snapshot.docs
+            allDocs.map((doc) => {
+                hoursBilled.push({ ...doc.data() })
+            })
+            const totalSecondsWorked = hoursBilled[0].timer
+            const totalHoursWorked = totalSecondsWorked / 3600
+
+            const taskStartedDate = moment((tasks[0].createdAt).toDate()).format("LLL")
+            const taskSubmittedDate = moment().format("LLL")
+            const totalHoursTaken = moment(taskSubmittedDate).diff(moment(taskStartedDate), "hours", "minutes", "seconds")
+
+            const totalMinutesTaken = moment(taskSubmittedDate).diff(moment(taskStartedDate), "minutes")
+            const totalMinutesWorked = totalHoursWorked * 60
+            const hoursDifference = totalMinutesTaken - totalMinutesWorked
+            let pauseTime = 0
+            if (hoursDifference >= 0) {
+                pauseTime = hoursDifference
+            }
+            updateDoc(docRef, {
+                hoursBilled: `${totalHoursWorked} hours`,
+                taskStartedAt: taskStartedDate,
+                taskSubmittedAt: taskSubmittedDate,
+                totalHoursTaken: `${totalHoursTaken} hours`,
+                pauseTime: `${pauseTime} minutes`
+            })
+        })
+
+        updateDoc(docRef, {
+            status: "completed",
+            prLink: data.prLink,
+        })
     }
 
     return (
