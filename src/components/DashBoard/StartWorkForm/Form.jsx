@@ -27,13 +27,15 @@ const Form = ({ setOpenModal, setTimerOn }) => {
 
     const handleFormSubmit = (data) => {
         addDoc(colRef, {
-            projectName: projectName,
-            ticketDetails: data.ticketDetails,
-            estimatedTime: `${parseInt(data.estimatedTime)} hours`,
-            workType: workType,
-            userId: user.uid,
-            userEmail: user.email,
-            userName: user.displayName,
+            project: projectName,
+            ticket: data.ticketDetails,
+            estimation: `${parseInt(data.estimatedTime)} hours`,
+            type: workType,
+            user: {
+                name: user.displayName,
+                email: user.email,
+                id: user.uid
+            },
             createdAt: serverTimestamp(),
             status: "in progress"
         })

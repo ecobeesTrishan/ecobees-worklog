@@ -115,7 +115,7 @@ const StopWatch = () => {
             </div>
 
             {openModal && <Form setOpenModal={setOpenModal} setTimerOn={setTimerOn} />}
-            {openPauseModal && <PauseForm setOpenPauseModal={setOpenPauseModal} setIsRunning={setIsRunning} />}
+            {openPauseModal && <PauseForm setOpenPauseModal={setOpenPauseModal} setIsRunning={setIsRunning} isRunning={isRunning} timer={timer} />}
             {openSubmitModal && <SubmitForm setOpenSubmitModal={setOpenSubmitModal} handleFormSubmit={handleSubmit} />}
         </div>
     )
