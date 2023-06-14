@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { query, where, orderBy, getDocs, updateDoc, doc, collection, onSnapshot } from "firebase/firestore"
+import { query, where, getDocs, updateDoc, doc, collection, onSnapshot } from "firebase/firestore"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import moment from "moment"
@@ -14,7 +14,7 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
     const userContext = useContext(AuthContext)
     const { user } = userContext
 
-    const firebaseQuery = user?.displayName && query(colRef, where("userId", "==", user.uid), where("status", "==", "in progress"), orderBy("createdAt"))
+    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"))
     const getTasks = async () => {
         const snapshot = await getDocs(firebaseQuery)
         const allDocs = snapshot.docs
@@ -57,11 +57,13 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                 pauseTime = hoursDifference
             }
             updateDoc(docRef, {
+                logs: {
+                    startedAt: taskStartedDate,
+                    submittedAt: taskSubmittedDate,
+                },
                 hoursBilled: `${totalHoursWorked} hours`,
-                taskStartedAt: taskStartedDate,
-                taskSubmittedAt: taskSubmittedDate,
-                totalHoursTaken: `${totalHoursTaken} hours`,
-                pauseTime: `${pauseTime} minutes`
+                totalHours: `${totalHoursTaken} hours`,
+                totalPause: `${pauseTime} minutes`
             })
         })
 
@@ -92,7 +94,7 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                                 name="projectName"
                                 disabled={true}
                                 register={register}
-                                value={tasks[0].projectName}
+                                value={tasks[0].project}
                                 errorMessage={errors.projectName?.message}
                             />
 
@@ -102,7 +104,7 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                                 name="ticketDetails"
                                 disabled={true}
                                 register={register}
-                                value={tasks[0].ticketDetails}
+                                value={tasks[0].ticket}
                                 errorMessage={errors.ticketDetails?.message}
                             />
 
@@ -112,7 +114,7 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                                 name="estimatedTime"
                                 disabled={true}
                                 register={register}
-                                value={tasks[0].estimatedTime}
+                                value={tasks[0].estimation}
                                 errorMessage={errors.estimatedTime?.message}
                             />
 
@@ -122,12 +124,12 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                                 name="workType"
                                 disabled={true}
                                 register={register}
-                                value={tasks[0].workType}
+                                value={tasks[0].type}
                                 errorMessage={errors.workType?.message}
                             />
 
                             <CheckBox
-                                workType={tasks[0].workType}
+                                workType={tasks[0].type}
                                 register={register}
                                 errorMessage={errors.checkLists?.message}
                             />
