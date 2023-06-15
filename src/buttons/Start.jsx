@@ -12,7 +12,7 @@ const Start = ({ onClick }) => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-20 p-4 transition ease-in-out rounded-md bg-slate-300 hover:bg-slate-200"
+                    className="w-20 p-4 transition ease-in-out rounded-md bg-[#fdb517] hover:bg-[#ecae1d]"
                 >
                     <path
                         strokeLinecap="round"

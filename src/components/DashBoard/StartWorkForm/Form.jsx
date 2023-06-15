@@ -1,26 +1,19 @@
 import { useContext, useState } from "react"
-import { addDoc, serverTimestamp, getDocs } from "firebase/firestore"
+import { addDoc, serverTimestamp } from "firebase/firestore"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { colRef, projectsColRef } from "src/firebase"
-import { getWorkTypes } from "src/utils"
-import { InputField, SelectField, CloseModal } from "components/common"
-import formSchema from "./formSchema"
+import { colRef } from "src/firebase"
 import { AuthContext } from "contexts/AuthContext"
+import { InputField, SelectField, CloseModal } from "components/common"
+import { getProjects, getTypes } from "src/utils"
+import formSchema from "./formSchema"
 
-const projectsList = []
-const getProjects = async () => {
-    const projectDocs = await getDocs(projectsColRef)
-    const allDocs = projectDocs.docs
-    allDocs.map((doc) => {
-        projectsList.push({ ...doc.data() })
-    })
-}
-getProjects()
+const projects = getProjects()
+const types = getTypes()
 
 const Form = ({ setOpenModal, setTimerOn }) => {
-    const [workType, setWorkType] = useState(getWorkTypes()[0].value)
-    const [projectName, setProjectName] = useState(projectsList[0].value)
+    const [projectName, setProjectName] = useState(projects[0].value)
+    const [workType, setWorkType] = useState(types[0].value)
 
     const userContext = useContext(AuthContext)
     const { user } = userContext
@@ -61,7 +54,7 @@ const Form = ({ setOpenModal, setTimerOn }) => {
                 >
                     <SelectField
                         label="Project Name"
-                        options={projectsList}
+                        options={projects}
                         onChange={(selectedOption) => setProjectName(selectedOption.value)}
                     />
 
@@ -83,7 +76,7 @@ const Form = ({ setOpenModal, setTimerOn }) => {
 
                     <SelectField
                         label="Work Type"
-                        options={getWorkTypes()}
+                        options={types}
                         onChange={(selectedOption) => setWorkType(selectedOption.value)}
                     />
 

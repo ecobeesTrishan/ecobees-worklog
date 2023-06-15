@@ -1,5 +1,6 @@
-import getWorkTypes from "./getWorkTypes"
-import getPauseReasons from "./getPauseReasons"
 import getCheckLists from "./getCheckLists"
+import getProjects from "./getProjects"
+import getTypes from "./getTypes"
+import getPauseReasons from "./getPauseReasons"
 
-export { getWorkTypes, getPauseReasons, getCheckLists }
+export { getCheckLists, getProjects, getTypes, getPauseReasons }

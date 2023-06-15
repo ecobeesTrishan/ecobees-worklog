@@ -1,14 +1,16 @@
 import { useContext, useState } from "react"
-import { doc, getDocs, query, where, updateDoc, addDoc } from "firebase/firestore"
+import { doc, getDocs, query, where, updateDoc } from "firebase/firestore"
+import { v4 as uuidv4 } from 'uuid'
 import moment from "moment"
-import { v4 as uuidv4 } from 'uuid';
 import { db, colRef } from "src/firebase"
-import { getPauseReasons } from "src/utils"
 import { AuthContext } from "contexts/AuthContext"
+import { getPauseReasons } from "src/utils"
 import { SelectField, CloseModal } from "components/common"
 
-const Form = ({ setOpenPauseModal, setIsRunning, isRunning, timer }) => {
-    const [pauseReason, setPauseReason] = useState(getPauseReasons()[0].value)
+const pauseReasons = getPauseReasons()
+
+const Form = ({ setOpenPauseModal, setIsRunning, isRunning }) => {
+    const [pauseReason, setPauseReason] = useState(pauseReasons[0].value)
     const [tasks, setTasks] = useState([])
 
     const userContext = useContext(AuthContext)
@@ -39,10 +41,6 @@ const Form = ({ setOpenPauseModal, setIsRunning, isRunning, timer }) => {
                 pausedAt: moment().format("LLL")
             }
         })
-
-        addDoc(colRef, {
-
-        })
     }
     if (!isRunning) {
         updatePauseStates()
@@ -63,7 +61,7 @@ const Form = ({ setOpenPauseModal, setIsRunning, isRunning, timer }) => {
 
                     <SelectField
                         label="Pause reason"
-                        options={getPauseReasons()}
+                        options={pauseReasons}
                         onChange={(selectedOption) => setPauseReason(selectedOption.value)}
                     />
 

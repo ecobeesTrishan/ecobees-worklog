@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
+import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore'
+import { db } from "src/firebase"
 import { Pause, Resume, Start, Submit } from "src/buttons"
 import { Form } from "./StartWorkForm"
 import { PauseForm } from "./PauseWorkForm"
 import { SubmitForm } from "./SubmitWorkForm"
-import { db } from "src/firebase"
-import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore'
 
 const stopwatchDocRef = doc(collection(db, 'stopwatch'), 'stopwatchTime')
 const submittedStopWatchDocRef = doc(collection(db, 'stopwatchSaved'), 'stopwatchTime')
@@ -29,9 +29,7 @@ const StopWatch = () => {
             }
         })
 
-        return () => {
-            unsubscribe()
-        }
+        return () => unsubscribe()
     }, [])
 
     useEffect(() => {
@@ -39,10 +37,7 @@ const StopWatch = () => {
             const interval = setInterval(() => {
                 setTimer((prevTimer) => prevTimer + 1)
             }, 1000)
-
-            return () => {
-                clearInterval(interval)
-            }
+            return () => clearInterval(interval)
         }
     }, [isRunning])
 
@@ -90,7 +85,6 @@ const StopWatch = () => {
         setDoc(stopwatchDocRef, { timer })
     }, [timer])
 
-
     return (
         <div className="relative flex flex-col items-center justify-center gap-6 my-10 font-primary">
             <h2 className="opacity-50">
@@ -108,14 +102,16 @@ const StopWatch = () => {
 
                 {isRunning && <Pause onClick={handlePause} />}
 
-                {timer > 0 && <Submit onClick={() => setOpenSubmitModal(true)} />}
-
                 {!isRunning && timer > 0 && <Resume onClick={handleResume} />}
+
+                {timer > 0 && <Submit onClick={() => setOpenSubmitModal(true)} />}
 
             </div>
 
             {openModal && <Form setOpenModal={setOpenModal} setTimerOn={setTimerOn} />}
+
             {openPauseModal && <PauseForm setOpenPauseModal={setOpenPauseModal} setIsRunning={setIsRunning} isRunning={isRunning} timer={timer} />}
+
             {openSubmitModal && <SubmitForm setOpenSubmitModal={setOpenSubmitModal} handleFormSubmit={handleSubmit} />}
         </div>
     )

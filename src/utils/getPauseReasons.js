@@ -1,11 +1,15 @@
+import { getDocs } from "firebase/firestore"
+import { pauseReasonsRef } from "src/firebase"
+
+const pauseReasons = []
 const getPauseReasons = () => {
-    const pauseReasons = [
-        { label: "Tiffin Break", value: "tiffin" },
-        { label: "Rest", value: "rest" },
-        { label: "End of the Day", value: "eod" },
-        { label: "Blockers", value: "blockers" },
-        { label: "Refreshment", value: "Refreshment" },
-    ]
+    getDocs(pauseReasonsRef)
+        .then((pauseReasonsDocs) => {
+            const allDocs = pauseReasonsDocs.docs
+            allDocs.map((doc) => {
+                pauseReasons.push({ ...doc.data() })
+            })
+        })
     return pauseReasons
 }
 
