@@ -1,20 +1,17 @@
-import { useState, useEffect, useContext } from "react"
-import { collection, doc, onSnapshot, query, setDoc, updateDoc, where, getDocs } from 'firebase/firestore'
+import { useState, useContext } from "react"
+import moment from "moment"
+import { collection, doc, query, setDoc, updateDoc, where, getDocs } from 'firebase/firestore'
 import { db, colRef } from "src/firebase"
-import { AuthContext } from "contexts/AuthContext"
+import { AuthContext, TimerContext } from "contexts"
 import { Pause, Resume, Start, Submit } from "src/buttons"
 import { Form } from "./StartWorkForm"
 import { PauseForm } from "./PauseWorkForm"
 import { SubmitForm } from "./SubmitWorkForm"
-import moment from "moment"
 
-const stopwatchDocRef = doc(collection(db, 'stopwatch'), 'stopwatchTime')
 const submittedStopWatchDocRef = doc(collection(db, 'stopwatchSaved'), 'stopwatchTime')
 
 const StopWatch = () => {
-    const [timer, setTimer] = useState(0)
-    const [isRunning, setIsRunning] = useState(false)
-    const [, setStartTime] = useState(0)
+    const { timer, isRunning, setTimer, setIsRunning, setStartTime } = useContext(TimerContext)
     const [openModal, setOpenModal] = useState(false)
     const [openPauseModal, setOpenPauseModal] = useState(false)
     const [openSubmitModal, setOpenSubmitModal] = useState(false)
@@ -37,32 +34,6 @@ const StopWatch = () => {
         })
     }
     user?.displayName && getTasksAndLogs()
-
-    useEffect(() => {
-        const savedTimer = localStorage.getItem('stopwatchTimer')
-        if (savedTimer) {
-            setTimer(parseInt(savedTimer))
-            setIsRunning(true)
-            setStartTime(Date.now() - parseInt(savedTimer) * 1000)
-        }
-
-        const unsubscribe = onSnapshot(stopwatchDocRef, (docSnapshot) => {
-            if (docSnapshot.exists()) {
-                setTimer(docSnapshot.data().timer)
-            }
-        })
-
-        return () => unsubscribe()
-    }, [])
-
-    useEffect(() => {
-        if (isRunning) {
-            const interval = setInterval(() => {
-                setTimer((prevTimer) => prevTimer + 1)
-            }, 1000)
-            return () => clearInterval(interval)
-        }
-    }, [isRunning])
 
     const handleStart = () => {
         setOpenModal(true)
@@ -116,11 +87,6 @@ const StopWatch = () => {
         handleReset()
     }
 
-    useEffect(() => {
-        localStorage.setItem('stopwatchTimer', timer.toString())
-        setDoc(stopwatchDocRef, { timer })
-    }, [timer])
-
     return (
         <div className="relative flex flex-col items-center justify-center gap-6 my-10 font-primary">
             <h2 className="opacity-50">
@@ -154,6 +120,8 @@ const StopWatch = () => {
 }
 
 export default StopWatch
+
+
 
 
 // import { useState, useEffect, useContext } from "react"

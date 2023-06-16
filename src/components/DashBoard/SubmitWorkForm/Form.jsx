@@ -6,7 +6,7 @@ import moment from "moment"
 import { db, colRef } from "src/firebase"
 import formSchema from "./formSchema"
 import { InputField, CheckBox, CloseModal } from "components/common"
-import { AuthContext } from "contexts/AuthContext"
+import { AuthContext } from "contexts"
 
 const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
     const [tasks, setTasks] = useState([])
@@ -52,14 +52,25 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
             const totalMinutesTaken = moment(taskSubmittedDate).diff(moment(taskStartedDate), "minutes")
             const totalMinutesWorked = totalHoursWorked * 60
             const hoursDifference = totalMinutesTaken - totalMinutesWorked
+
             let pauseTime = 0
             if (hoursDifference >= 0) {
                 pauseTime = hoursDifference
             }
+
+            let totalHoursBilled
+            if (totalHoursWorked < 1) {
+                totalHoursBilled = `${totalMinutesWorked} minutes`
+            }
+            if (totalHoursWorked >= 1) {
+                totalHoursBilled = `${totalHoursWorked} hours`
+            }
+
+
             updateDoc(docRef, {
                 startedAt: taskStartedDate,
                 submittedAt: taskSubmittedDate,
-                hoursBilled: `${totalHoursWorked} hours`,
+                hoursBilled: totalHoursBilled,
                 totalHours: `${totalHoursTaken} hours`,
                 totalPause: `${pauseTime} minutes`
             })

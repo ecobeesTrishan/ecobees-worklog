@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
-import { AuthContext } from "contexts/AuthContext"
+import { AuthContext } from "contexts"
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -87,9 +87,8 @@ const NavBar = () => {
                                             </li>
                                         </Link>
 
-                                        <Link to="/">
+                                        <Link to="/history">
                                             <li
-                                                href={"/"}
                                                 className="block px-3 py-2 -mx-3 font-primary bg-[#f5f5f5] text-base font-semibold leading-7 text-black rounded-lg hover:bg-[#c7c6c6] transition ease-in-out"
                                             >
                                                 Work History
