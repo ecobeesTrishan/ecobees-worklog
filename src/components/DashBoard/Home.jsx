@@ -4,18 +4,9 @@ import { colRef } from "src/firebase"
 import StopWatch from "./StopWatch"
 import { AuthContext } from "contexts/AuthContext"
 
-const Info = () => {
+const Home = () => {
     const userContext = useContext(AuthContext)
     const { user, logOut } = userContext
-
-    const handleLogOut = async () => {
-        try {
-            await logOut()
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
 
     const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"))
     user?.displayName && onSnapshot(firebaseQuery, (snapshot) => {
@@ -38,17 +29,8 @@ const Info = () => {
             </p>
 
             <StopWatch />
-
-            <button
-                id="user-action-log-out"
-                type="button"
-                onClick={handleLogOut}
-                className="bg-[#fdb517] p-2 px-4 rounded-md cursor-pointer hover:bg-[#ecae1d] transition ease-in-out absolute bottom-0 right-0 m-6"
-            >
-                Log Out
-            </button>
         </div>
     )
 }
 
-export default Info
+export default Home

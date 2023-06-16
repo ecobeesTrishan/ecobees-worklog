@@ -1,7 +1,6 @@
 import NavBar from "./NavBar"
-import Home from "./Home"
 import Signin from "./SignIn"
 import Protected from "./Protected"
-import { Info, StopWatch } from "./DashBoard"
+import { Home, StopWatch } from "./DashBoard"
 
-export { NavBar, Home, Signin, Protected, Info, StopWatch }
+export { NavBar, Signin, Protected, Home, StopWatch }

@@ -1,6 +1,5 @@
 import { useContext, useState } from "react"
 import { doc, getDocs, query, where, updateDoc } from "firebase/firestore"
-import { v4 as uuidv4 } from 'uuid'
 import moment from "moment"
 import { db, colRef } from "src/firebase"
 import { AuthContext } from "contexts/AuthContext"
@@ -12,38 +11,43 @@ const pauseReasons = getPauseReasons()
 const Form = ({ setOpenPauseModal, setIsRunning, isRunning }) => {
     const [pauseReason, setPauseReason] = useState(pauseReasons[0].value)
     const [tasks, setTasks] = useState([])
+    const [logs, setLogs] = useState([])
 
     const userContext = useContext(AuthContext)
     const { user } = userContext
 
     const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"))
-    const getTasks = async () => {
+    const getTasksAndLogs = async () => {
         const snapshot = await getDocs(firebaseQuery)
         const allDocs = snapshot.docs
         const tasksArr = []
         allDocs.map((doc) => {
             tasksArr.push({ ...doc.data(), id: doc.id })
+            const logsArr = doc.data().logs
             setTasks(tasksArr)
+            setLogs(logsArr)
         })
     }
-    user?.displayName && getTasks()
+    user?.displayName && getTasksAndLogs()
 
-    const handleFormSubmit = () => {
+    const handleFormSubmit = (event) => {
+        event.preventDefault()
+
         setIsRunning(false)
-    }
+        setOpenPauseModal(false)
 
-    const updatePauseStates = () => {
         const docRef = doc(db, "tasks", tasks[0]?.id)
+
+        const currentTime = moment().format("LLL")
+        const pausedFor = pauseReason ? pauseReason : ""
+        const tempLogsArr = logs
+        tempLogsArr.push(`Paused at ${currentTime} for ${pausedFor}`)
+        setLogs(tempLogsArr)
+
         updateDoc(docRef, {
             status: "paused",
-            [`pause-${uuidv4().slice(0, 8)}`]: {
-                reason: pauseReason ? pauseReason : "",
-                pausedAt: moment().format("LLL")
-            }
+            logs: logs
         })
-    }
-    if (!isRunning) {
-        updatePauseStates()
     }
 
     return (
