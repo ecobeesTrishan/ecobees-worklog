@@ -30,7 +30,8 @@ const Form = ({ setOpenModal, setTimerOn }) => {
                 id: user.uid
             },
             createdAt: serverTimestamp(),
-            status: "in progress"
+            status: "in progress",
+            logs: []
         })
         setOpenModal(false)
         setTimerOn(true)

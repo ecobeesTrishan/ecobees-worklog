@@ -57,10 +57,8 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                 pauseTime = hoursDifference
             }
             updateDoc(docRef, {
-                logs: {
-                    startedAt: taskStartedDate,
-                    submittedAt: taskSubmittedDate,
-                },
+                startedAt: taskStartedDate,
+                submittedAt: taskSubmittedDate,
                 hoursBilled: `${totalHoursWorked} hours`,
                 totalHours: `${totalHoursTaken} hours`,
                 totalPause: `${pauseTime} minutes`
