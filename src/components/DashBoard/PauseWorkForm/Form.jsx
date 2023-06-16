@@ -2,13 +2,13 @@ import { useContext, useState } from "react"
 import { doc, getDocs, query, where, updateDoc } from "firebase/firestore"
 import moment from "moment"
 import { db, colRef } from "src/firebase"
-import { AuthContext } from "contexts/AuthContext"
+import { AuthContext } from "contexts"
 import { getPauseReasons } from "src/utils"
 import { SelectField, CloseModal } from "components/common"
 
 const pauseReasons = getPauseReasons()
 
-const Form = ({ setOpenPauseModal, setIsRunning, isRunning }) => {
+const Form = ({ setOpenPauseModal, setIsRunning }) => {
     const [pauseReason, setPauseReason] = useState(pauseReasons[0].value)
     const [tasks, setTasks] = useState([])
     const [logs, setLogs] = useState([])
