@@ -94,6 +94,15 @@ const NavBar = () => {
                                                 Work History
                                             </li>
                                         </Link>
+
+                                        <button
+                                            id="user-action-log-out"
+                                            type="button"
+                                            onClick={handleLogOut}
+                                            className="block px-3 py-2 my-20 -mx-3 font-bold text-white transition ease-in-out rounded-md cursor-pointer bg-rose-600 hover:bg-rose-700 font-primary"
+                                        >
+                                            Log Out
+                                        </button>
                                     </div>
 
                                     :
@@ -104,15 +113,6 @@ const NavBar = () => {
                                     </li>
                                 }
                             </ul>
-
-                            <button
-                                id="user-action-log-out"
-                                type="button"
-                                onClick={handleLogOut}
-                                className="absolute bottom-0 right-0 p-2 px-4 m-6 font-bold text-white transition ease-in-out rounded-md cursor-pointer bg-rose-600 hover:bg-rose-700 font-primary"
-                            >
-                                Log Out
-                            </button>
                         </div>
                     </div>
                 </Dialog.Panel>
