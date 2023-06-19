@@ -66,7 +66,6 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                 totalHoursBilled = `${totalHoursWorked} hours`
             }
 
-
             updateDoc(docRef, {
                 startedAt: taskStartedDate,
                 submittedAt: taskSubmittedDate,
