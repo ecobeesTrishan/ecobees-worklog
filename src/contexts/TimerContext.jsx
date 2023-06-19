@@ -1,6 +1,7 @@
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore"
 import { createContext, useEffect, useState, useContext } from "react"
 import { db } from "src/firebase"
+import { AuthContext } from "contexts"
 
 export const TimerContext = createContext()
 
@@ -11,11 +12,14 @@ const TimerProvider = ({ children }) => {
     const [isRunning, setIsRunning] = useState(false)
     const [, setStartTime] = useState(0)
 
+    const authContext = useContext(AuthContext)
+    const { user } = authContext
+
     useEffect(() => {
         const savedTimer = localStorage.getItem('stopwatchTimer')
         if (savedTimer) {
             setTimer(parseInt(savedTimer))
-            setIsRunning(false) // Set to false initially
+            setIsRunning(false)
             setStartTime(Date.now() - parseInt(savedTimer) * 1000)
         }
 
@@ -39,7 +43,9 @@ const TimerProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem('stopwatchTimer', timer.toString())
-        setDoc(stopwatchDocRef, { timer })
+        if (user?.displayName) {
+            setDoc(stopwatchDocRef, { timer, userId: user.uid })
+        }
     }, [timer])
 
     return (
