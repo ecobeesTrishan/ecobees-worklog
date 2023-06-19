@@ -24,9 +24,6 @@ const Home = () => {
                 Welcome {user.displayName}
             </h1>
 
-            <p className="py-6">
-                {user.email}
-            </p>
             <StopWatch />
         </div>
     )

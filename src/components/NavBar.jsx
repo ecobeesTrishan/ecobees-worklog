@@ -81,6 +81,7 @@ const NavBar = () => {
                                     <div className="flex flex-col space-y-4">
                                         <Link to="/">
                                             <li
+                                                onClick={() => setMobileMenuOpen(false)}
                                                 className="block px-3 py-2 -mx-3 font-primary bg-[#f5f5f5] text-base font-semibold leading-7 text-black rounded-lg hover:bg-[#c7c6c6] transition ease-in-out"
                                             >
                                                 Start Work
@@ -89,6 +90,7 @@ const NavBar = () => {
 
                                         <Link to="/history">
                                             <li
+                                                onClick={() => setMobileMenuOpen(false)}
                                                 className="block px-3 py-2 -mx-3 font-primary bg-[#f5f5f5] text-base font-semibold leading-7 text-black rounded-lg hover:bg-[#c7c6c6] transition ease-in-out"
                                             >
                                                 Work History
