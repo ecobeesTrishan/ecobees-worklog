@@ -1,12 +1,10 @@
 import { useState, useContext } from "react"
 import moment from "moment"
-import { collection, doc, query, setDoc, updateDoc, where, getDocs } from 'firebase/firestore'
+import { doc, query, updateDoc, where, getDocs } from 'firebase/firestore'
 import { db, colRef } from "src/firebase"
 import { AuthContext, TimerContext } from "contexts"
 import { Pause, Resume, Start, Submit } from "components/Buttons"
 import { StartForm, PauseForm, SubmitForm } from "components/Forms"
-
-const submittedStopWatchDocRef = doc(collection(db, 'stopwatchSaved'), 'stopwatchTime')
 
 const StopWatch = () => {
     const { timer, isRunning, setTimer, setIsRunning, setStartTime } = useContext(TimerContext)
@@ -81,7 +79,10 @@ const StopWatch = () => {
     }
 
     const handleSubmit = () => {
-        setDoc(submittedStopWatchDocRef, { timer })
+        const docRef = doc(db, "tasks", tasks[0]?.id)
+        updateDoc(docRef, {
+            savedTimer: timer
+        })
         handleReset()
     }
 

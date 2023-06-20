@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { query, where, getDocs, updateDoc, doc, collection, onSnapshot } from "firebase/firestore"
+import { query, where, getDocs, updateDoc, doc, collection, onSnapshot, getDoc } from "firebase/firestore"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import moment from "moment"
@@ -33,52 +33,56 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
     const submitForm = (data) => {
         handleFormSubmit()
         setOpenSubmitModal(false)
-
-        const hoursBilled = []
-        const submittedStopWatchRef = collection(db, 'stopwatchSaved')
         const docRef = doc(db, "tasks", tasks[0]?.id)
-        onSnapshot(submittedStopWatchRef, (snapshot) => {
-            const allDocs = snapshot.docs
-            allDocs.map((doc) => {
-                hoursBilled.push({ ...doc.data() })
+
+        getDoc(docRef)
+            .then((doc) => {
+                const hoursBilled = []
+                hoursBilled.push(doc.data())
+
+                const taskStartedDate = moment((tasks[0].createdAt).toDate()).format("LLL")
+                const taskSubmittedDate = moment().format("LLL")
+
+                const totalHoursSpent = moment(taskSubmittedDate).diff(moment(taskStartedDate), "hours", "minutes", "seconds")
+                const totalMinutesSpent = moment(taskSubmittedDate).diff(moment(taskStartedDate), "minutes")
+
+                const totalSecondsWorked = hoursBilled[0].savedTimer
+                const totalHoursWorked = totalSecondsWorked / 3600
+                const totalMinutesWorked = totalHoursWorked * 60
+
+                const hoursDifference = totalMinutesSpent - totalMinutesWorked
+
+                let pauseTime = 0
+                if (hoursDifference >= 0) {
+                    pauseTime = hoursDifference
+                }
+
+                let totalTimeWorked
+                if (totalHoursWorked < 1) {
+                    totalTimeWorked = `${Math.round(totalMinutesWorked)} minutes`
+                }
+                if (totalHoursWorked >= 1) {
+                    totalTimeWorked = `${Math.round(totalHoursWorked)} hours`
+                }
+
+                let totalTimeSpent
+                if (totalHoursSpent < 1) {
+                    totalTimeSpent = `${Math.round(totalMinutesSpent)} minutes`
+                }
+                if (totalHoursSpent >= 1) {
+                    totalTimeSpent = `${Math.round(totalHoursSpent)} hours`
+                }
+
+                updateDoc(docRef, {
+                    status: "completed",
+                    prLink: data.prLink,
+                    startedAt: taskStartedDate,
+                    submittedAt: taskSubmittedDate,
+                    hoursWorked: totalTimeWorked,
+                    hoursSpent: totalTimeSpent,
+                    totalPause: `${Math.round(pauseTime)} minutes`
+                })
             })
-            const totalSecondsWorked = hoursBilled[0].timer
-            const totalHoursWorked = totalSecondsWorked / 3600
-
-            const taskStartedDate = moment((tasks[0].createdAt).toDate()).format("LLL")
-            const taskSubmittedDate = moment().format("LLL")
-            const totalHoursTaken = moment(taskSubmittedDate).diff(moment(taskStartedDate), "hours", "minutes", "seconds")
-
-            const totalMinutesTaken = moment(taskSubmittedDate).diff(moment(taskStartedDate), "minutes")
-            const totalMinutesWorked = totalHoursWorked * 60
-            const hoursDifference = totalMinutesTaken - totalMinutesWorked
-
-            let pauseTime = 0
-            if (hoursDifference >= 0) {
-                pauseTime = hoursDifference
-            }
-
-            let totalHoursBilled
-            if (totalHoursWorked < 1) {
-                totalHoursBilled = `${totalMinutesWorked} minutes`
-            }
-            if (totalHoursWorked >= 1) {
-                totalHoursBilled = `${totalHoursWorked} hours`
-            }
-
-            updateDoc(docRef, {
-                startedAt: taskStartedDate,
-                submittedAt: taskSubmittedDate,
-                hoursBilled: totalHoursBilled,
-                totalHours: `${totalHoursTaken} hours`,
-                totalPause: `${pauseTime} minutes`
-            })
-        })
-
-        updateDoc(docRef, {
-            status: "completed",
-            prLink: data.prLink,
-        })
     }
 
     return (

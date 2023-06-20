@@ -59,7 +59,6 @@ const TimerProvider = ({ children }) => {
 
         if (user?.displayName) {
             const docRef = doc(db, "tasks", tasks[0]?.id)
-
             updateDoc(docRef, {
                 timer: timer
             })

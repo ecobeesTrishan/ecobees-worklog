@@ -58,7 +58,7 @@ const Table = ({ tasks }) => {
                                                 </td>
 
                                                 <td className="px-3 py-4 text-sm text-gray-900 whitespace-nowrap">
-                                                    {task.totalHours}
+                                                    {task.hoursSpent}
                                                 </td>
 
                                                 <td className="px-3 py-4 text-sm text-gray-900 capitalize whitespace-nowrap">
