@@ -110,7 +110,7 @@ const WorkHistory = () => {
                                         </th>
 
                                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                            Hours Billed
+                                            Time Spent
                                         </th>
 
                                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
@@ -146,7 +146,7 @@ const WorkHistory = () => {
                                                     </td>
 
                                                     <td className="px-3 py-4 text-sm text-gray-900 whitespace-nowrap">
-                                                        {task.hoursBilled}
+                                                        {task.totalHours}
                                                     </td>
 
                                                     <td className="px-3 py-4 text-sm text-gray-900 capitalize whitespace-nowrap">
