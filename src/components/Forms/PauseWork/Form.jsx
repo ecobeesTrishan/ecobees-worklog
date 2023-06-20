@@ -4,7 +4,7 @@ import moment from "moment"
 import { db, colRef } from "src/firebase"
 import { AuthContext } from "contexts"
 import { getPauseReasons } from "src/utils"
-import { SelectField, CloseModal } from "components/common"
+import { SelectField, CloseModal } from "components/Common"
 
 const pauseReasons = getPauseReasons()
 

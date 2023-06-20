@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { colRef } from "src/firebase"
 import { AuthContext } from "contexts"
-import { InputField, SelectField, CloseModal } from "components/common"
+import { InputField, SelectField, CloseModal } from "components/Common"
 import { getProjects, getTypes } from "src/utils"
 import formSchema from "./formSchema"
 

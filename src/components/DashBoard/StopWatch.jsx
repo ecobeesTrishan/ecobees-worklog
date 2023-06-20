@@ -3,10 +3,8 @@ import moment from "moment"
 import { collection, doc, query, setDoc, updateDoc, where, getDocs } from 'firebase/firestore'
 import { db, colRef } from "src/firebase"
 import { AuthContext, TimerContext } from "contexts"
-import { Pause, Resume, Start, Submit } from "src/buttons"
-import { Form } from "./StartWorkForm"
-import { PauseForm } from "./PauseWorkForm"
-import { SubmitForm } from "./SubmitWorkForm"
+import { Pause, Resume, Start, Submit } from "components/Buttons"
+import { StartForm, PauseForm, SubmitForm } from "components/Forms"
 
 const submittedStopWatchDocRef = doc(collection(db, 'stopwatchSaved'), 'stopwatchTime')
 
@@ -110,7 +108,7 @@ const StopWatch = () => {
 
             </div>
 
-            {openModal && <Form setOpenModal={setOpenModal} setTimerOn={setTimerOn} />}
+            {openModal && <StartForm setOpenModal={setOpenModal} setTimerOn={setTimerOn} />}
 
             {openPauseModal && <PauseForm setOpenPauseModal={setOpenPauseModal} setIsRunning={setIsRunning} isRunning={isRunning} timer={timer} />}
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 const CloseModal = ({ id, onClick }) => {
     return (
         <button
