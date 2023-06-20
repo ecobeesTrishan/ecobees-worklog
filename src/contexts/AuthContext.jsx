@@ -1,8 +1,6 @@
 import { useState, createContext, useEffect } from "react"
 import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, deleteUser } from "firebase/auth"
 import { auth } from "src/firebase"
-import { stopWatchTimerRef } from "src/firebase"
-import { addDoc } from "firebase/firestore"
 
 const AuthContext = createContext()
 
@@ -19,10 +17,6 @@ const AuthContextProvider = ({ children }) => {
         signInWithPopup(auth, provider)
             .then((result) => {
                 const { user } = result
-                addDoc(stopWatchTimerRef, {
-                    userId: user.uid,
-                    timer: 0
-                })
 
                 if (email.endsWith(eligibleDomain)) {
                     console.log("Eligible Domain")

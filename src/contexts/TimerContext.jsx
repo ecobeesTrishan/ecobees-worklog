@@ -1,19 +1,30 @@
-import { collection, doc, onSnapshot, setDoc } from "firebase/firestore"
+import { doc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore"
 import { createContext, useEffect, useState, useContext } from "react"
-import { db } from "src/firebase"
+import { db, colRef } from "src/firebase"
 import { AuthContext } from "contexts"
 
 export const TimerContext = createContext()
-
-const stopwatchDocRef = doc(collection(db, 'stopwatch'), 'stopwatchTime')
 
 const TimerProvider = ({ children }) => {
     const [timer, setTimer] = useState(0)
     const [isRunning, setIsRunning] = useState(false)
     const [, setStartTime] = useState(0)
+    const [tasks, setTasks] = useState([])
 
     const authContext = useContext(AuthContext)
     const { user } = authContext
+
+    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"))
+    const getTasks = async () => {
+        const snapshot = await getDocs(firebaseQuery)
+        const allDocs = snapshot.docs
+        const tasksArr = []
+        allDocs.map((doc) => {
+            tasksArr.push({ ...doc.data(), id: doc.id })
+            setTasks(tasksArr)
+        })
+    }
+    user?.displayName && getTasks()
 
     useEffect(() => {
         const savedTimer = localStorage.getItem('stopwatchTimer')
@@ -23,13 +34,15 @@ const TimerProvider = ({ children }) => {
             setStartTime(Date.now() - parseInt(savedTimer) * 1000)
         }
 
-        const unsubscribe = onSnapshot(stopwatchDocRef, (docSnapshot) => {
-            if (docSnapshot.exists()) {
-                setTimer(docSnapshot.data().timer)
-            }
-        })
-
-        return () => unsubscribe()
+        if (user?.displayName) {
+            const docRef = user?.displayName && doc(db, "tasks", tasks[0]?.id)
+            const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    setTimer(docSnapshot.data().timer)
+                }
+            })
+            return () => unsubscribe()
+        }
     }, [])
 
     useEffect(() => {
@@ -43,8 +56,13 @@ const TimerProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem('stopwatchTimer', timer.toString())
+
         if (user?.displayName) {
-            setDoc(stopwatchDocRef, { timer, userId: user.uid })
+            const docRef = doc(db, "tasks", tasks[0]?.id)
+
+            updateDoc(docRef, {
+                timer: timer
+            })
         }
     }, [timer])
 

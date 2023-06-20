@@ -22,7 +22,7 @@ const Form = ({ setOpenModal, setTimerOn }) => {
         addDoc(colRef, {
             project: projectName,
             ticket: data.ticketDetails,
-            estimation: `${parseInt(data.estimatedTime)} hours`,
+            estimation: `${data.estimatedTime} hours`,
             type: workType,
             user: {
                 name: user.displayName,
@@ -31,7 +31,8 @@ const Form = ({ setOpenModal, setTimerOn }) => {
             },
             createdAt: serverTimestamp(),
             status: "in progress",
-            logs: []
+            logs: [],
+            timer: 0
         })
         setOpenModal(false)
         setTimerOn(true)
