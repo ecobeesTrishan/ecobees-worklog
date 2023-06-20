@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import moment from "moment"
 import { db, colRef } from "src/firebase"
 import formSchema from "./formSchema"
-import { InputField, CheckBox, CloseModal } from "components/common"
+import { InputField, CheckBox, CloseModal } from "components/Common"
 import { AuthContext } from "contexts"
 
 const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {

@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom"
 import { AuthContextProvider, TimerProvider } from "contexts"
-import { NavBar, Signin, Protected, Home, WorkHistory } from "components"
+import { Header, Signin, Protected, Home, WorkHistory } from "components"
 import "src/index.css"
 
 const App = () => {
   return (
     <AuthContextProvider>
       <TimerProvider>
-        <NavBar />
+        <Header />
 
         <Routes>
           <Route

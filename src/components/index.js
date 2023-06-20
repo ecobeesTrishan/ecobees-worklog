@@ -1,7 +1,7 @@
-import NavBar from "./NavBar"
+import Header from "./Header"
 import Signin from "./SignIn"
 import Protected from "./Protected"
 import WorkHistory from "./WorkHistory"
 import { Home, StopWatch } from "./DashBoard"
 
-export { NavBar, Signin, Protected, Home, StopWatch, WorkHistory }
+export { Header, Signin, Protected, Home, StopWatch, WorkHistory }

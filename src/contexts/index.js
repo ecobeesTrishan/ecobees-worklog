@@ -1,6 +1,4 @@
-import AuthContextProvider from "./AuthContext"
-import TimerProvider from "./TimerContext"
-import { AuthContext } from "./AuthContext"
-import { TimerContext } from "./TimerContext"
+import AuthContextProvider, { AuthContext } from "./AuthContext"
+import TimerProvider, { TimerContext } from "./TimerContext"
 
 export { AuthContextProvider, TimerProvider, AuthContext, TimerContext }
