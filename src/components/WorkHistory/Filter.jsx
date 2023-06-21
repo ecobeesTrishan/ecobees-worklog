@@ -1,21 +1,22 @@
-import Select from "react-select"
+import PropTypes from "prop-types";
+import Select from "react-select";
 
 const defaultProject = {
     label: "All Projects",
     value: "all"
-}
+};
 
 const Filter = ({ setTasks, rawTasks, projectsList }) => {
     const handleChange = (selectedOption) => {
         const filteredTasks = rawTasks.filter((task) => {
-            return task.project === selectedOption.value
-        })
-        setTasks(filteredTasks)
+            return task.project === selectedOption.value;
+        });
+        setTasks(filteredTasks);
 
         if (selectedOption.value === "all") {
-            setTasks(rawTasks)
+            setTasks(rawTasks);
         }
-    }
+    };
 
     return (
         <div className="mt-10 sm:w-96">
@@ -34,7 +35,13 @@ const Filter = ({ setTasks, rawTasks, projectsList }) => {
                 onChange={handleChange}
             />
         </div>
-    )
-}
+    );
+};
 
-export default Filter
+export default Filter;
+
+Filter.propTypes = {
+    setTasks: PropTypes.func,
+    rawTasks: PropTypes.array,
+    projectsList: PropTypes.array
+};

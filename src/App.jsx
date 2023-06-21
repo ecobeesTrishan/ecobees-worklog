@@ -1,7 +1,7 @@
-import { Route, Routes } from "react-router-dom"
-import { AuthContextProvider, TimerProvider } from "contexts"
-import { Header, Signin, Protected, Home, WorkHistory } from "components"
-import "src/index.css"
+import { Route, Routes } from "react-router-dom";
+import { AuthContextProvider, TimerProvider } from "contexts";
+import { Header, Signin, Protected, Home, WorkHistory } from "components";
+import "src/index.css";
 
 const App = () => {
   return (
@@ -34,7 +34,7 @@ const App = () => {
         </Routes>
       </TimerProvider>
     </AuthContextProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

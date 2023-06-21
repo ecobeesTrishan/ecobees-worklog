@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const InputField = ({ label, id, register, errorMessage, name, disabled, value }) => {
     return (
         <div className="sm:col-span-3">
@@ -25,7 +27,17 @@ const InputField = ({ label, id, register, errorMessage, name, disabled, value }
                 }
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default InputField
+export default InputField;
+
+InputField.propTypes = {
+    label: PropTypes.string,
+    id: PropTypes.string,
+    register: PropTypes.any,
+    errorMessage: PropTypes.string,
+    name: PropTypes.string,
+    disabled: PropTypes.bool,
+    value: PropTypes.string
+};

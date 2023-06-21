@@ -1,4 +1,4 @@
-import Home from "./Home"
-import StopWatch from "./StopWatch"
+import Home from "./Home";
+import StopWatch from "./StopWatch";
 
-export { Home, StopWatch }
+export { Home, StopWatch };

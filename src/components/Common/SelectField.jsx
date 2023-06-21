@@ -1,4 +1,5 @@
-import Select from "react-select"
+import PropTypes from "prop-types";
+import Select from "react-select";
 
 const SelectField = ({ label, options, onChange }) => {
     return (
@@ -18,7 +19,13 @@ const SelectField = ({ label, options, onChange }) => {
                 onChange={onChange}
             />
         </div>
-    )
-}
+    );
+};
 
-export default SelectField
+export default SelectField;
+
+SelectField.propTypes = {
+    label: PropTypes.string,
+    options: PropTypes.any,
+    onChange: PropTypes.func
+};

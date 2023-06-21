@@ -1,4 +1,5 @@
-import moment from "moment"
+import PropTypes from "prop-types";
+import moment from "moment";
 
 const Table = ({ tasks }) => {
     return (
@@ -40,8 +41,8 @@ const Table = ({ tasks }) => {
                                 {tasks.length > 0
                                     ?
                                     tasks.map((task) => {
-                                        const { startedAt } = task
-                                        const date = moment(startedAt).format("LL")
+                                        const { startedAt } = task;
+                                        const date = moment(startedAt).format("LL");
 
                                         return (
                                             <tr key={task.id}>
@@ -66,12 +67,12 @@ const Table = ({ tasks }) => {
                                                 </td>
 
                                                 <td className="px-3 py-4 text-sm text-indigo-600 cursor-pointer whitespace-nowrap hover:text-indigo-900 hover:underline">
-                                                    <a href={task.prLink} target="_blank">
+                                                    <a href={task.prLink} target="_blank" rel="noreferrer">
                                                         {task.prLink}
                                                     </a>
                                                 </td>
                                             </tr>
-                                        )
+                                        );
                                     })
                                     :
                                     <tr>
@@ -86,7 +87,11 @@ const Table = ({ tasks }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Table
+export default Table;
+
+Table.propTypes = {
+    tasks: PropTypes.array
+};

@@ -1,78 +1,86 @@
-import { getDocs } from "firebase/firestore"
-import { frontendCheckListsRef, backendCheckListsRef, figmaCheckListsRef, wordpressCheckListsRef } from "src/firebase"
+import { getDocs } from "firebase/firestore";
+import { frontendCheckListsRef, backendCheckListsRef, figmaCheckListsRef, wordpressCheckListsRef } from "src/firebase";
 
 const TYPES = {
     fe: "frontend",
     be: "backend",
     fi: "figma",
     wp: "wordpress"
-}
+};
 
-const frontendCheckLists = []
+const frontendCheckLists = [];
 const getFrontendCheckLists = () => {
     getDocs(frontendCheckListsRef)
         .then((checklistsDocs) => {
-            const allDocs = checklistsDocs.docs
+            const allDocs = checklistsDocs.docs;
             allDocs.map((doc) => {
-                frontendCheckLists.push({ ...doc.data() })
-            })
-        })
-}
-getFrontendCheckLists()
+                frontendCheckLists.push({
+                    ...doc.data()
+                });
+            });
+        });
+};
+getFrontendCheckLists();
 
 
-const backendCheckLists = []
+const backendCheckLists = [];
 const getBackendCheckLists = () => {
     getDocs(backendCheckListsRef)
         .then((checklistsDocs) => {
-            const allDocs = checklistsDocs.docs
+            const allDocs = checklistsDocs.docs;
             allDocs.map((doc) => {
-                backendCheckLists.push({ ...doc.data() })
-            })
-        })
-}
-getBackendCheckLists()
+                backendCheckLists.push({
+                    ...doc.data()
+                });
+            });
+        });
+};
+getBackendCheckLists();
 
 
-const figmaCheckLists = []
+const figmaCheckLists = [];
 const getFigmaCheckLists = () => {
     getDocs(figmaCheckListsRef)
         .then((checklistsDocs) => {
-            const allDocs = checklistsDocs.docs
+            const allDocs = checklistsDocs.docs;
             allDocs.map((doc) => {
-                figmaCheckLists.push({ ...doc.data() })
-            })
-        })
-}
-getFigmaCheckLists()
+                figmaCheckLists.push({
+                    ...doc.data()
+                });
+            });
+        });
+};
+getFigmaCheckLists();
 
 
-const wordpressCheckLists = []
+const wordpressCheckLists = [];
 const getWordpressCheckLists = () => {
     getDocs(wordpressCheckListsRef)
         .then((checklistsDocs) => {
-            const allDocs = checklistsDocs.docs
+            const allDocs = checklistsDocs.docs;
             allDocs.map((doc) => {
-                wordpressCheckLists.push({ ...doc.data() })
-            })
-        })
-}
-getWordpressCheckLists()
+                wordpressCheckLists.push({
+                    ...doc.data()
+                });
+            });
+        });
+};
+getWordpressCheckLists();
 
 
 const getCheckLists = (workType) => {
     if (workType === TYPES.fe) {
-        return frontendCheckLists
+        return frontendCheckLists;
     }
     if (workType === TYPES.be) {
-        return backendCheckLists
+        return backendCheckLists;
     }
     if (workType === TYPES.fi) {
-        return figmaCheckLists
+        return figmaCheckLists;
     }
     if (workType === TYPES.wp) {
-        return wordpressCheckLists
+        return wordpressCheckLists;
     }
-}
+};
 
-export default getCheckLists
+export default getCheckLists;

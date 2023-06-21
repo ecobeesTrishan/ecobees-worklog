@@ -1,5 +1,6 @@
-import { Bars3Icon } from "@heroicons/react/24/outline"
-import { Link } from "react-router-dom"
+import PropTypes from "prop-types";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const NavBar = ({ setMobileMenuOpen }) => {
     return (
@@ -26,7 +27,11 @@ const NavBar = ({ setMobileMenuOpen }) => {
                 </button>
             </div>
         </nav>
-    )
-}
+    );
+};
 
-export default NavBar
+export default NavBar;
+
+NavBar.propTypes = {
+    setMobileMenuOpen: PropTypes.func
+};

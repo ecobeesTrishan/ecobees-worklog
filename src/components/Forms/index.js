@@ -1,5 +1,5 @@
-import { StartForm } from "./StartWork"
-import { PauseForm } from "./PauseWork"
-import { SubmitForm } from "./SubmitWork"
+import { StartForm } from "./StartWork";
+import { PauseForm } from "./PauseWork";
+import { SubmitForm } from "./SubmitWork";
 
-export { StartForm, PauseForm, SubmitForm }
+export { StartForm, PauseForm, SubmitForm };
