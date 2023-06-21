@@ -1,2 +1,2 @@
-import PauseForm from "./Form"
-export { PauseForm }
+import PauseForm from "./Form";
+export { PauseForm };

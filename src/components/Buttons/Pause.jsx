@@ -1,4 +1,5 @@
-import { PauseIcon } from "@heroicons/react/24/outline"
+import PropTypes from "prop-types";
+import { PauseIcon } from "@heroicons/react/24/outline";
 
 const Pause = ({ onClick }) => {
     return (
@@ -17,7 +18,11 @@ const Pause = ({ onClick }) => {
                 Pause Work
             </p>
         </div>
-    )
-}
+    );
+};
 
-export default Pause
+export default Pause;
+
+Pause.propTypes = {
+    onClick: PropTypes.func
+};

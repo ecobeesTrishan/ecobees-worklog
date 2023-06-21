@@ -1,26 +1,26 @@
-import { useContext, useEffect } from "react"
-import { GoogleButton } from "react-google-button"
-import { AuthContext } from "contexts"
-import { useNavigate } from "react-router-dom"
+import { useContext, useEffect } from "react";
+import { GoogleButton } from "react-google-button";
+import { AuthContext } from "contexts";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
-    const navigate = useNavigate()
-    const userContext = useContext(AuthContext)
-    const { googleSignIn, user, domainError, eligibleDomain } = userContext
+    const navigate = useNavigate();
+    const userContext = useContext(AuthContext);
+    const { googleSignIn, user, domainError, eligibleDomain } = userContext;
 
     const handleGoogleSignIn = async () => {
         try {
-            await googleSignIn()
+            await googleSignIn();
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
     useEffect(() => {
         if (user != null && user.displayName != null) {
-            navigate("/")
+            navigate("/");
         }
-    }, [user])
+    }, [user]);
 
     return (
         <div className="relative flex flex-col items-center">
@@ -39,6 +39,6 @@ const Signin = () => {
                 </p>
             }
         </div>
-    )
-}
-export default Signin
+    );
+};
+export default Signin;

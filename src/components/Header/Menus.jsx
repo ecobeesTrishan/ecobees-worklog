@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom"
-import { Dialog } from "@headlessui/react"
-import { XMarkIcon } from "@heroicons/react/24/outline"
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { Dialog } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const Menus = ({ mobileMenuOpen, setMobileMenuOpen, user, handleLogOut }) => {
     return (
@@ -80,7 +81,14 @@ const Menus = ({ mobileMenuOpen, setMobileMenuOpen, user, handleLogOut }) => {
                 </div>
             </Dialog.Panel>
         </Dialog>
-    )
-}
+    );
+};
 
-export default Menus
+export default Menus;
+
+Menus.propTypes = {
+    mobileMenuOpen: PropTypes.bool,
+    setMobileMenuOpen: PropTypes.func,
+    user: PropTypes.any,
+    handleLogOut: PropTypes.func
+};

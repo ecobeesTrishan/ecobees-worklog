@@ -1,53 +1,63 @@
-import { useState, createContext, useEffect } from "react"
-import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, deleteUser } from "firebase/auth"
-import { auth } from "src/firebase"
+import PropTypes from "prop-types";
+import { useState, createContext, useEffect } from "react";
+import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, deleteUser } from "firebase/auth";
+import { auth } from "src/firebase";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
-const eligibleDomain = "@ecobees.net"
+const eligibleDomain = "@ecobees.net";
 
 const AuthContextProvider = ({ children }) => {
-    const [user, setUser] = useState({})
-    const [domainError, setDomainError] = useState(false)
+    const [user, setUser] = useState({
+    });
+    const [domainError, setDomainError] = useState(false);
 
     const googleSignIn = () => {
-        const provider = new GoogleAuthProvider()
-        provider.setCustomParameters({ hd: 'ecobees.net' })
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({
+            hd: "ecobees.net"
+        });
 
         signInWithPopup(auth, provider)
             .then((result) => {
-                const { user } = result
+                const { user } = result;
 
                 if (email.endsWith(eligibleDomain)) {
-                    console.log("Eligible Domain")
+                    console.log("Eligible Domain");
                 } else {
-                    console.log("Domain is not eligible")
-                    signOut(auth)
-                    deleteUser(user)
-                    setDomainError(true)
+                    console.log("Domain is not eligible");
+                    signOut(auth);
+                    deleteUser(user);
+                    setDomainError(true);
                 }
-            })
-    }
+            });
+    };
 
     const logOut = () => {
-        signOut(auth)
-    }
+        signOut(auth);
+    };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser)
-        })
+            setUser(currentUser);
+        });
 
-        return () => unsubscribe()
-    }, [])
+        return () => unsubscribe();
+    }, []);
 
 
     return (
-        <AuthContext.Provider value={{ googleSignIn, logOut, user, domainError, eligibleDomain }}>
+        <AuthContext.Provider value={{
+            googleSignIn, logOut, user, domainError, eligibleDomain
+        }}>
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
-export default AuthContextProvider
-export { AuthContext }
+export default AuthContextProvider;
+export { AuthContext };
+
+AuthContextProvider.propTypes = {
+    children: PropTypes.any
+};

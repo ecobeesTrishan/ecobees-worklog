@@ -1,22 +1,23 @@
-import { useContext, useState } from "react"
-import { addDoc, serverTimestamp } from "firebase/firestore"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { colRef } from "src/firebase"
-import { AuthContext } from "contexts"
-import { InputField, SelectField, CloseModal } from "components/Common"
-import { getProjects, getTypes } from "src/utils"
-import formSchema from "./formSchema"
+import PropTypes from "prop-types";
+import { useContext, useState } from "react";
+import { addDoc, serverTimestamp } from "firebase/firestore";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { colRef } from "src/firebase";
+import { AuthContext } from "contexts";
+import { InputField, SelectField, CloseModal } from "components/Common";
+import { getProjects, getTypes } from "src/utils";
+import formSchema from "./formSchema";
 
-const projects = getProjects()
-const types = getTypes()
+const projects = getProjects();
+const types = getTypes();
 
 const Form = ({ setOpenModal, setTimerOn }) => {
-    const [projectName, setProjectName] = useState(projects[0].value)
-    const [workType, setWorkType] = useState(types[0].value)
+    const [projectName, setProjectName] = useState(projects[0].value);
+    const [workType, setWorkType] = useState(types[0].value);
 
-    const userContext = useContext(AuthContext)
-    const { user } = userContext
+    const userContext = useContext(AuthContext);
+    const { user } = userContext;
 
     const handleFormSubmit = (data) => {
         addDoc(colRef, {
@@ -34,14 +35,14 @@ const Form = ({ setOpenModal, setTimerOn }) => {
             logs: [],
             timer: 0,
             savedTimer: 0
-        })
-        setOpenModal(false)
-        setTimerOn(true)
-    }
+        });
+        setOpenModal(false);
+        setTimerOn(true);
+    };
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(formSchema)
-    })
+    });
 
     return (
         <div className="fixed z-50 flex items-center w-[100vw] h-[100vh] justify-center overflow-x-hidden overflow-y-auto bg-gray-500 inset-0 bg-opacity-40 ">
@@ -95,7 +96,12 @@ const Form = ({ setOpenModal, setTimerOn }) => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Form
+export default Form;
+
+Form.propTypes = {
+    setOpenModal: PropTypes.func,
+    setTimerOn: PropTypes.func
+};

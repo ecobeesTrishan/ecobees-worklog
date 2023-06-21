@@ -1,4 +1,5 @@
-import { PlayIcon } from "@heroicons/react/24/outline"
+import PropTypes from "prop-types";
+import { PlayIcon } from "@heroicons/react/24/outline";
 
 const Resume = ({ onClick }) => {
     return (
@@ -17,7 +18,11 @@ const Resume = ({ onClick }) => {
                 Resume Work
             </p>
         </div>
-    )
-}
+    );
+};
 
-export default Resume
+export default Resume;
+
+Resume.propTypes = {
+    onClick: PropTypes.func
+};

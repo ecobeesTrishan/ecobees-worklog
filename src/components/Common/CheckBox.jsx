@@ -1,4 +1,5 @@
-import { getCheckLists } from "src/utils"
+import PropTypes from "prop-types";
+import { getCheckLists } from "src/utils";
 
 const CheckBox = ({ workType, register, errorMessage }) => {
     return (
@@ -6,7 +7,7 @@ const CheckBox = ({ workType, register, errorMessage }) => {
             <p className="text-xl font-bold capitalize">{workType} Checklist</p>
 
             {getCheckLists(workType).map((checklist) => {
-                const { name, value, id } = checklist
+                const { name, value, id } = checklist;
                 return (
                     <div className="flex items-center gap-2" key={id}>
                         <div>
@@ -26,7 +27,7 @@ const CheckBox = ({ workType, register, errorMessage }) => {
                             {value}
                         </label>
                     </div>
-                )
+                );
             })}
 
             {errorMessage &&
@@ -35,7 +36,13 @@ const CheckBox = ({ workType, register, errorMessage }) => {
                 </p>
             }
         </div>
-    )
-}
+    );
+};
 
-export default CheckBox
+export default CheckBox;
+
+CheckBox.propTypes = {
+    workType: PropTypes.string,
+    register: PropTypes.any,
+    errorMessage: PropTypes.string
+};

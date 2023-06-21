@@ -1,54 +1,57 @@
-import { useContext, useState } from "react"
-import { doc, getDocs, query, where, updateDoc } from "firebase/firestore"
-import moment from "moment"
-import { db, colRef } from "src/firebase"
-import { AuthContext } from "contexts"
-import { getPauseReasons } from "src/utils"
-import { SelectField, CloseModal } from "components/Common"
+import PropTypes from "prop-types";
+import { useContext, useState } from "react";
+import { doc, getDocs, query, where, updateDoc } from "firebase/firestore";
+import moment from "moment";
+import { db, colRef } from "src/firebase";
+import { AuthContext } from "contexts";
+import { getPauseReasons } from "src/utils";
+import { SelectField, CloseModal } from "components/Common";
 
-const pauseReasons = getPauseReasons()
+const pauseReasons = getPauseReasons();
 
 const Form = ({ setOpenPauseModal, setIsRunning }) => {
-    const [pauseReason, setPauseReason] = useState(pauseReasons[0].value)
-    const [tasks, setTasks] = useState([])
-    const [logs, setLogs] = useState([])
+    const [pauseReason, setPauseReason] = useState(pauseReasons[0].value);
+    const [tasks, setTasks] = useState([]);
+    const [logs, setLogs] = useState([]);
 
-    const userContext = useContext(AuthContext)
-    const { user } = userContext
+    const userContext = useContext(AuthContext);
+    const { user } = userContext;
 
-    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"))
+    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"));
     const getTasksAndLogs = async () => {
-        const snapshot = await getDocs(firebaseQuery)
-        const allDocs = snapshot.docs
-        const tasksArr = []
+        const snapshot = await getDocs(firebaseQuery);
+        const allDocs = snapshot.docs;
+        const tasksArr = [];
         allDocs.map((doc) => {
-            tasksArr.push({ ...doc.data(), id: doc.id })
-            const logsArr = doc.data().logs
-            setTasks(tasksArr)
-            setLogs(logsArr)
-        })
-    }
-    user?.displayName && getTasksAndLogs()
+            tasksArr.push({
+                ...doc.data(), id: doc.id
+            });
+            const logsArr = doc.data().logs;
+            setTasks(tasksArr);
+            setLogs(logsArr);
+        });
+    };
+    user?.displayName && getTasksAndLogs();
 
     const handleFormSubmit = (event) => {
-        event.preventDefault()
+        event.preventDefault();
 
-        setIsRunning(false)
-        setOpenPauseModal(false)
+        setIsRunning(false);
+        setOpenPauseModal(false);
 
-        const docRef = doc(db, "tasks", tasks[0]?.id)
+        const docRef = doc(db, "tasks", tasks[0]?.id);
 
-        const currentTime = moment().format("LLL")
-        const pausedFor = pauseReason ? pauseReason : ""
-        const tempLogsArr = logs
-        tempLogsArr.push(`Paused at ${currentTime} for ${pausedFor}`)
-        setLogs(tempLogsArr)
+        const currentTime = moment().format("LLL");
+        const pausedFor = pauseReason ? pauseReason : "";
+        const tempLogsArr = logs;
+        tempLogsArr.push(`Paused at ${currentTime} for ${pausedFor}`);
+        setLogs(tempLogsArr);
 
         updateDoc(docRef, {
             status: "paused",
             logs: logs
-        })
-    }
+        });
+    };
 
     return (
         <div className="fixed z-50 flex items-center w-[100vw] h-[100vh] justify-center overflow-x-hidden overflow-y-auto bg-gray-500 inset-0 bg-opacity-40 ">
@@ -81,7 +84,12 @@ const Form = ({ setOpenPauseModal, setIsRunning }) => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Form
+export default Form;
+
+Form.propTypes = {
+    setOpenPauseModal: PropTypes.func,
+    setIsRunning: PropTypes.func
+};

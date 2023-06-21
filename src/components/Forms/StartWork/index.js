@@ -1,4 +1,4 @@
-import StartForm from "./Form"
-import formSchema from "./formSchema"
+import StartForm from "./Form";
+import formSchema from "./formSchema";
 
-export { StartForm, formSchema }
+export { StartForm, formSchema };

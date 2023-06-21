@@ -1,90 +1,92 @@
-import { useState, useContext } from "react"
-import moment from "moment"
-import { doc, query, updateDoc, where, getDocs } from 'firebase/firestore'
-import { db, colRef } from "src/firebase"
-import { AuthContext, TimerContext } from "contexts"
-import { Pause, Resume, Start, Submit } from "components/Buttons"
-import { StartForm, PauseForm, SubmitForm } from "components/Forms"
+import { useState, useContext } from "react";
+import moment from "moment";
+import { doc, query, updateDoc, where, getDocs } from "firebase/firestore";
+import { db, colRef } from "src/firebase";
+import { AuthContext, TimerContext } from "contexts";
+import { Pause, Resume, Start, Submit } from "components/Buttons";
+import { StartForm, PauseForm, SubmitForm } from "components/Forms";
 
 const StopWatch = () => {
-    const { timer, isRunning, setTimer, setIsRunning, setStartTime } = useContext(TimerContext)
-    const [openModal, setOpenModal] = useState(false)
-    const [openPauseModal, setOpenPauseModal] = useState(false)
-    const [openSubmitModal, setOpenSubmitModal] = useState(false)
-    const [tasks, setTasks] = useState([])
-    const [logs, setLogs] = useState([])
+    const { timer, isRunning, setTimer, setIsRunning, setStartTime } = useContext(TimerContext);
+    const [openModal, setOpenModal] = useState(false);
+    const [openPauseModal, setOpenPauseModal] = useState(false);
+    const [openSubmitModal, setOpenSubmitModal] = useState(false);
+    const [tasks, setTasks] = useState([]);
+    const [logs, setLogs] = useState([]);
 
-    const userContext = useContext(AuthContext)
-    const { user } = userContext
+    const userContext = useContext(AuthContext);
+    const { user } = userContext;
 
-    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"))
+    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"));
     const getTasksAndLogs = async () => {
-        const snapshot = await getDocs(firebaseQuery)
-        const allDocs = snapshot.docs
-        const tasksArr = []
+        const snapshot = await getDocs(firebaseQuery);
+        const allDocs = snapshot.docs;
+        const tasksArr = [];
         allDocs.map((doc) => {
-            tasksArr.push({ ...doc.data(), id: doc.id })
-            const logsArr = doc.data().logs
-            setTasks(tasksArr)
-            setLogs(logsArr)
-        })
-    }
-    user?.displayName && getTasksAndLogs()
+            tasksArr.push({
+                ...doc.data(), id: doc.id
+            });
+            const logsArr = doc.data().logs;
+            setTasks(tasksArr);
+            setLogs(logsArr);
+        });
+    };
+    user?.displayName && getTasksAndLogs();
 
     const handleStart = () => {
-        setOpenModal(true)
-    }
+        setOpenModal(true);
+    };
 
     const setTimerOn = () => {
         if (!isRunning) {
-            setIsRunning(true)
-            setStartTime(Date.now() - timer * 1000)
+            setIsRunning(true);
+            setStartTime(Date.now() - timer * 1000);
         }
-    }
+    };
 
     const handlePause = () => {
-        setOpenPauseModal(true)
-    }
+        setOpenPauseModal(true);
+    };
 
     const handleResume = () => {
-        setIsRunning(true)
-        setStartTime(Date.now() - timer * 1000)
+        setIsRunning(true);
+        setStartTime(Date.now() - timer * 1000);
 
-        const docRef = doc(db, "tasks", tasks[0]?.id)
+        const docRef = doc(db, "tasks", tasks[0]?.id);
 
-        const currentTime = moment().format("LLL")
-        const tempLogsArr = logs
-        tempLogsArr.push(`Resumed at ${currentTime}`)
-        setLogs(tempLogsArr)
+        const currentTime = moment().format("LLL");
+        const tempLogsArr = logs;
+        tempLogsArr.push(`Resumed at ${currentTime}`);
+        setLogs(tempLogsArr);
 
         updateDoc(docRef, {
             status: "in progress",
             logs: logs
-        })
-    }
+        });
+    };
 
     const handleReset = () => {
-        setTimer(0)
-        setIsRunning(false)
-        setStartTime(0)
-        localStorage.removeItem('stopwatchTimer')
-    }
+        setTimer(0);
+        setIsRunning(false);
+        setStartTime(0);
+        localStorage.removeItem("stopwatchTimer");
+    };
 
     const formatTime = (time) => {
-        const hours = Math.floor(time / 3600)
-        const minutes = Math.floor((time % 3600) / 60)
-        const seconds = time % 60
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
 
-        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-    }
+        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    };
 
     const handleSubmit = () => {
-        const docRef = doc(db, "tasks", tasks[0]?.id)
+        const docRef = doc(db, "tasks", tasks[0]?.id);
         updateDoc(docRef, {
             savedTimer: timer
-        })
-        handleReset()
-    }
+        });
+        handleReset();
+    };
 
     return (
         <div className="relative flex flex-col items-center justify-center gap-6 my-10 font-primary">
@@ -115,7 +117,7 @@ const StopWatch = () => {
 
             {openSubmitModal && <SubmitForm setOpenSubmitModal={setOpenSubmitModal} handleFormSubmit={handleSubmit} />}
         </div>
-    )
-}
+    );
+};
 
-export default StopWatch
+export default StopWatch;

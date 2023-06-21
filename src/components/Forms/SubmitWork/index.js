@@ -1,2 +1,2 @@
-import SubmitForm from "./Form"
-export { SubmitForm }
+import SubmitForm from "./Form";
+export { SubmitForm };

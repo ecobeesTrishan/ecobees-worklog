@@ -1,4 +1,5 @@
-import { RocketLaunchIcon } from "@heroicons/react/24/outline"
+import PropTypes from "prop-types";
+import { RocketLaunchIcon } from "@heroicons/react/24/outline";
 
 const Start = ({ onClick }) => {
     return (
@@ -17,7 +18,11 @@ const Start = ({ onClick }) => {
                 Start Work
             </p>
         </div>
-    )
-}
+    );
+};
 
-export default Start
+export default Start;
+
+Start.propTypes = {
+    onClick: PropTypes.func
+};

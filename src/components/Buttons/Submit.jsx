@@ -1,4 +1,5 @@
-import { TrophyIcon } from "@heroicons/react/24/outline"
+import PropTypes from "prop-types";
+import { TrophyIcon } from "@heroicons/react/24/outline";
 
 const Submit = ({ onClick }) => {
     return (
@@ -17,7 +18,11 @@ const Submit = ({ onClick }) => {
                 Submit Work
             </p>
         </div>
-    )
-}
+    );
+};
 
-export default Submit
+export default Submit;
+
+Submit.propTypes = {
+    onClick: PropTypes.func
+};
