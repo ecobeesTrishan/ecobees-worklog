@@ -60,20 +60,28 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                     pauseTime = hoursDifference;
                 }
 
+                let totalPause;
+                if (pauseTime >= 60) {
+                    totalPause = `${(pauseTime / 60).toFixed(2)} hours`;
+                }
+                if (pauseTime < 60) {
+                    totalPause = `${pauseTime.toFixed(2)} minutes`;
+                }
+
                 let totalTimeWorked;
                 if (totalHoursWorked < 1) {
-                    totalTimeWorked = `${Math.round(totalMinutesWorked)} minutes`;
+                    totalTimeWorked = `${totalMinutesWorked.toFixed(2)} minutes`;
                 }
                 if (totalHoursWorked >= 1) {
-                    totalTimeWorked = `${Math.round(totalHoursWorked)} hours`;
+                    totalTimeWorked = `${totalHoursWorked.toFixed(2)} hours`;
                 }
 
                 let totalTimeSpent;
                 if (totalHoursSpent < 1) {
-                    totalTimeSpent = `${Math.round(totalMinutesSpent)} minutes`;
+                    totalTimeSpent = `${totalMinutesSpent.toFixed(2)} minutes`;
                 }
                 if (totalHoursSpent >= 1) {
-                    totalTimeSpent = `${Math.round(totalHoursSpent)} hours`;
+                    totalTimeSpent = `${totalHoursSpent.toFixed(2)} hours`;
                 }
 
                 updateDoc(docRef, {
@@ -83,7 +91,8 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                     submittedAt: taskSubmittedDate,
                     hoursWorked: totalTimeWorked,
                     hoursSpent: totalTimeSpent,
-                    totalPause: `${Math.round(pauseTime)} minutes`
+                    totalPause: totalPause,
+                    hoursWorkedForExcel: `${totalHoursWorked.toFixed(2)}`
                 });
             });
     };

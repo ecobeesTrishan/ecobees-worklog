@@ -14,6 +14,12 @@
 
 <body>
   <div id="root"></div>
+  <script>
+    window.addEventListener("beforeunload", function (e) {
+      e.preventDefault();
+      e.returnValue = "";
+    });
+  </script>
   <script type="module" src="/src/main.jsx"></script>
   <script src="/script.js"></script>
 </body>
