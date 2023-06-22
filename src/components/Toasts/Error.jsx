@@ -1,21 +1,21 @@
-import { ExclamationTriangleIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { XCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-const Warning = ({ message }) => {
+const Error = ({ message }) => {
     const [isHidden, setIsHidden] = useState(false);
 
     return (
-        <div className={`fixed right-0 top-[85px] p-4 rounded-md rounded-b-md border-l-4 border-l-yellow-600 bg-yellow-50 font-primary animate-slide-in font-bold ${isHidden ? "hidden" : null}`}>
+        <div className={`fixed right-0 top-[85px] p-4 rounded-md rounded-b-md border-l-4 border-l-red-600 bg-red-50 font-primary animate-slide-in font-bold ${isHidden ? "hidden" : null}`}>
             <div className="flex">
                 <div className="flex-shrink-0">
-                    <ExclamationTriangleIcon
-                        className="w-5 h-5 text-yellow-400"
+                    <XCircleIcon
+                        className="w-5 h-5 text-red-400"
                     />
                 </div>
 
                 <div className="ml-3">
-                    <p className="text-sm font-medium text-yellow-800">
+                    <p className="text-sm font-medium text-red-800">
                         {message}
                     </p>
                 </div>
@@ -25,7 +25,7 @@ const Warning = ({ message }) => {
                         <button
                             onClick={() => setIsHidden(true)}
                             type="button"
-                            className="inline-flex rounded-md bg-yellow-50 p-1.5 text-yellow-800 hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 focus:ring-offset-yellow-50"
+                            className="inline-flex rounded-md bg-red-50 p-1.5 text-red-800 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-red-50"
                         >
                             <XMarkIcon
                                 className="w-5 h-5"
@@ -38,8 +38,8 @@ const Warning = ({ message }) => {
     );
 };
 
-export default Warning;
+export default Error;
 
-Warning.propTypes = {
+Error.propTypes = {
     message: PropTypes.string
 };

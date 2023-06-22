@@ -24,7 +24,7 @@ const Signin = () => {
     }, [user]);
 
     return (
-        <div className="relative flex flex-col items-center">
+        <div className="flex flex-col items-center">
             <Warning
                 message="Download the PWA before signing in to avoid unexpected circumstances."
             />
