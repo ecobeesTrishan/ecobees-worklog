@@ -27,6 +27,10 @@ const Table = ({ tasks }) => {
                                     </th>
 
                                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        Time Worked
+                                    </th>
+
+                                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         Type
                                     </th>
 
@@ -60,6 +64,10 @@ const Table = ({ tasks }) => {
 
                                                 <td className="px-3 py-4 text-sm text-gray-900 whitespace-nowrap">
                                                     {task.hoursSpent}
+                                                </td>
+
+                                                <td className="px-3 py-4 text-sm text-gray-900 whitespace-nowrap">
+                                                    {task.hoursWorked}
                                                 </td>
 
                                                 <td className="px-3 py-4 text-sm text-gray-900 capitalize whitespace-nowrap">

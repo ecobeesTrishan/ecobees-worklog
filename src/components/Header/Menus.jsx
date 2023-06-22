@@ -59,6 +59,15 @@ const Menus = ({ mobileMenuOpen, setMobileMenuOpen, user, handleLogOut }) => {
                                         </li>
                                     </Link>
 
+                                    <Link to="/tt">
+                                        <li
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="block px-3 py-2 -mx-3 font-primary bg-[#f5f5f5] text-base font-semibold leading-7 text-black rounded-lg hover:bg-[#c7c6c6] transition ease-in-out"
+                                        >
+                                            404 Page
+                                        </li>
+                                    </Link>
+
                                     <button
                                         id="user-action-log-out"
                                         type="button"

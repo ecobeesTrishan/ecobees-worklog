@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { GoogleButton } from "react-google-button";
 import { AuthContext } from "contexts";
 import { useNavigate } from "react-router-dom";
+import { Warning } from "components/Toasts";
 
 const Signin = () => {
     const navigate = useNavigate();
@@ -24,6 +25,10 @@ const Signin = () => {
 
     return (
         <div className="relative flex flex-col items-center">
+            <Warning
+                message="Download the PWA before signing in to avoid unexpected circumstances."
+            />
+
             <h1 className="py-8 text-3xl font-bold text-center font-primary">
                 Sign in
             </h1>

@@ -21,6 +21,7 @@ const AuthContextProvider = ({ children }) => {
         signInWithPopup(auth, provider)
             .then((result) => {
                 const { user } = result;
+                const { email } = user;
 
                 if (email.endsWith(eligibleDomain)) {
                     console.log("Eligible Domain");
