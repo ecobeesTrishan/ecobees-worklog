@@ -8,18 +8,12 @@
   <meta name="theme-color" content="#fdb517" />
   <meta name="description" content="EcoBees Work Log Management System" />
   <link rel="apple-touch-icon" href="public/logo.svg">
-  <link rel="manifest" href="./manifest.json">
+  <link rel="manifest" href="/site.webmanifest" />
   <title>EcoBees Work Log Management System</title>
 </head>
 
 <body>
   <div id="root"></div>
-  <script>
-    window.addEventListener("beforeunload", function (e) {
-      e.preventDefault();
-      e.returnValue = "";
-    });
-  </script>
   <script type="module" src="/src/main.jsx"></script>
   <script src="/script.js"></script>
 </body>

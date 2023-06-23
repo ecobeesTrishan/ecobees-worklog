@@ -14,7 +14,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     quotes: ["error", "double"],
     semi: ["error", "always"],
-    "no-alert": ["error"],
+    "no-alert": ["off"],
     "no-console": ["off"],
     "max-len": [
       "error",
