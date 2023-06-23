@@ -3,25 +3,15 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  base: "./",
   plugins: [
     react(),
     VitePWA({
-      workbox: {
-        globPatterns: ["**/*"]
-      },
-      includeAssets: [
-        "**/*"
-      ],
+      registerType: "prompt",
       manifest: {
-        "theme_color": "#fdb517",
-        "background_color": "#ffffff",
-        "display": "standalone",
-        "scope": "/",
-        "start_url": "/",
+        "name": "EcoBees Work Log Management System",
         "short_name": "EcoBees",
         "description": "EcoBees Work Log Management System",
-        "name": "EcoBees Work Log Management System",
-        "orientation": "portrait-primary",
         "icons": [
           {
             "src": "/manifest-icon-192.maskable.png",
@@ -47,7 +37,13 @@ export default defineConfig({
             "type": "image/png",
             "purpose": "maskable"
           }
-        ]
+        ],
+        "theme_color": "#fdb517",
+        "background_color": "#ffffff",
+        "display": "standalone",
+        "scope": "/",
+        "start_url": "/",
+        "orientation": "portrait-primary"
       }
     })
   ],
