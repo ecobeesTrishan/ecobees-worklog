@@ -3,7 +3,7 @@ import Select from "react-select";
 
 const SelectField = ({ label, options, onChange }) => {
     return (
-        <div className="sm:col-span-3">
+        <div>
             <label
                 className="inline text-sm font-semibold leading-6 text-gray-900 bold"
             >

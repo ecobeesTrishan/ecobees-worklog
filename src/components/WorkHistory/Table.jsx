@@ -35,7 +35,7 @@ const Table = ({ tasks }) => {
                                     </th>
 
                                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                        PR Link
+                                        PR Link(s)
                                     </th>
 
                                 </tr>
@@ -74,10 +74,14 @@ const Table = ({ tasks }) => {
                                                     {task.type}
                                                 </td>
 
-                                                <td className="px-3 py-4 text-sm text-indigo-600 cursor-pointer whitespace-nowrap hover:text-indigo-900 hover:underline">
-                                                    <a href={task.prLink} target="_blank" rel="noreferrer">
-                                                        {task.prLink}
-                                                    </a>
+                                                <td className="px-3 py-4 text-sm cursor-pointer whitespace-nowrap ">
+                                                    {task.prLinks.map((prLink) => (
+                                                        <div key={prLink.link}>
+                                                            <a className="pr-3 text-indigo-600 hover:text-indigo-900 hover:underline" key={prLink.link} href={prLink.link} target="_blank" rel="noreferrer">
+                                                                {prLink.link}
+                                                            </a>
+                                                        </div>
+                                                    ))}
                                                 </td>
                                             </tr>
                                         );
