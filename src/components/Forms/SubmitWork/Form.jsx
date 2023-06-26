@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { query, where, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { db, colRef } from "src/firebase";
 import formSchema from "./formSchema";
 import { InputField, CheckBox, CloseModal } from "components/Common";
@@ -29,8 +30,21 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
     };
     user?.displayName && getTasks();
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, formState: { errors } } = useForm({
+        defaultValues: {
+            prLinks: [{
+                link: ""
+            }]
+        },
         resolver: yupResolver(formSchema)
+    });
+
+    const { fields, append, remove } = useFieldArray({
+        name: "prLinks",
+        control,
+        rules: {
+            required: "Please add at least 1 PR/WP/Figma Link"
+        }
     });
 
     const submitForm = (data) => {
@@ -86,7 +100,7 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
 
                 updateDoc(docRef, {
                     status: "completed",
-                    prLink: data.prLink,
+                    prLinks: data.prLinks,
                     startedAt: taskStartedDate,
                     submittedAt: taskSubmittedDate,
                     hoursWorked: totalTimeWorked,
@@ -107,7 +121,7 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
 
                 <form
                     onSubmit={handleSubmit(submitForm)}
-                    className="grid grid-cols-1 mt-10 gap-x-6 gap-y-8 sm:grid-cols-6"
+                    className="grid grid-cols-1 mt-10 gap-x-6 gap-y-8"
                 >
 
                     {tasks.length > 0 && (
@@ -158,13 +172,38 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                                 errorMessage={errors.checkLists?.message}
                             />
 
-                            <InputField
-                                label="PR/WP/Figma Link"
-                                id="pr-link"
-                                name="prLink"
-                                register={register}
-                                errorMessage={errors.prLink?.message}
-                            />
+                            {fields.length > 0 && fields.map((field, index) => (
+                                <div key={field.id}>
+                                    <InputField
+                                        label={`PR/WP/Figma Link ${index + 1}`}
+                                        id="pr-link"
+                                        name={`prLinks.${index}.link`}
+                                        register={register}
+                                        errorMessage={errors.prLinks?.root?.message}
+                                        required={true}
+                                    />
+
+                                    {index > 0 &&
+                                        <button onClick={() => remove(index)} type="button" className="px-6 my-4 w-full py-2 bg-[#f5f5f5] rounded-sm flex items-center justify-center gap-3">
+                                            <TrashIcon className="w-4" />
+
+                                            <p>
+                                                Remove Link
+                                            </p>
+                                        </button>
+                                    }
+                                </div>
+                            ))}
+
+                            <button onClick={() => append({
+                                link: ""
+                            })} type="button" className="px-6 py-2 bg-[#f5f5f5] rounded-sm flex items-center justify-center gap-3">
+                                <PlusIcon className="w-4" />
+
+                                <p>
+                                    Add more Links
+                                </p>
+                            </button>
                         </>
                     )}
 

@@ -63,7 +63,7 @@ const Form = ({ setOpenPauseModal, setIsRunning }) => {
 
                 <form
                     onSubmit={handleFormSubmit}
-                    className="grid grid-cols-1 mt-10 gap-x-6 gap-y-8 sm:grid-cols-6"
+                    className="grid grid-cols-1 mt-10 gap-x-6 gap-y-8"
                 >
 
                     <SelectField

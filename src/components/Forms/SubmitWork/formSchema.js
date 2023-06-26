@@ -13,10 +13,8 @@ const formSchema = yup.object().shape({
         .array()
         .min(6, "All checklists must be checked")
         .required(),
-    prLink: yup
-        .string()
-        .required("PR/WP/Figma link is required")
-        .min(5, "PR/WP/Figma link can't be less than 5 characters")
+    prLinks: yup
+        .mixed()
 });
 
 export default formSchema;
