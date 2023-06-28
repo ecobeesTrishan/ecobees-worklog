@@ -39,8 +39,8 @@ export default defineConfig({
         "theme_color": "#fdb517",
         "background_color": "#ffffff",
         "display": "standalone",
-        "scope": "https://ecobees.vercel.app/",
-        "start_url": "https://ecobees.vercel.app/signin",
+        "scope": "https://ecobees-worklog.vercel.app/",
+        "start_url": "https://ecobees-worklog.vercel.app/signin",
         "orientation": "portrait-primary"
       }
     })
