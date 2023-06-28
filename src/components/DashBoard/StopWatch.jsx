@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import moment from "moment";
 import { doc, query, updateDoc, where, getDocs } from "firebase/firestore";
 import { db, colRef } from "src/firebase";
@@ -17,21 +17,23 @@ const StopWatch = () => {
     const userContext = useContext(AuthContext);
     const { user } = userContext;
 
-    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"));
-    const getTasksAndLogs = async () => {
-        const snapshot = await getDocs(firebaseQuery);
-        const allDocs = snapshot.docs;
-        const tasksArr = [];
-        allDocs.map((doc) => {
-            tasksArr.push({
-                ...doc.data(), id: doc.id
+    useEffect(() => {
+        const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"));
+        const getTasksAndLogs = async () => {
+            const snapshot = await getDocs(firebaseQuery);
+            const allDocs = snapshot.docs;
+            const tasksArr = [];
+            allDocs.map((doc) => {
+                tasksArr.push({
+                    ...doc.data(), id: doc.id
+                });
+                const logsArr = doc.data().logs;
+                setTasks(tasksArr);
+                setLogs(logsArr);
             });
-            const logsArr = doc.data().logs;
-            setTasks(tasksArr);
-            setLogs(logsArr);
-        });
-    };
-    user?.displayName && getTasksAndLogs();
+        };
+        user?.displayName && getTasksAndLogs();
+    }, [user?.displayName]);
 
     const handleStart = () => {
         setOpenModal(true);

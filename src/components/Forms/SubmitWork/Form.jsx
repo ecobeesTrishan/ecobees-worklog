@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { query, where, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,19 +16,21 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
     const userContext = useContext(AuthContext);
     const { user } = userContext;
 
-    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"));
-    const getTasks = async () => {
-        const snapshot = await getDocs(firebaseQuery);
-        const allDocs = snapshot.docs;
-        const tasksArr = [];
-        allDocs.map((doc) => {
-            tasksArr.push({
-                ...doc.data(), id: doc.id
+    useEffect(() => {
+        const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"));
+        const getTasks = async () => {
+            const snapshot = await getDocs(firebaseQuery);
+            const allDocs = snapshot.docs;
+            const tasksArr = [];
+            allDocs.map((doc) => {
+                tasksArr.push({
+                    ...doc.data(), id: doc.id
+                });
+                setTasks(tasksArr);
             });
-            setTasks(tasksArr);
-        });
-    };
-    user?.displayName && getTasks();
+        };
+        user?.displayName && getTasks();
+    }, [user?.displayName]);
 
     const { register, handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {

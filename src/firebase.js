@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, collection } from "firebase/firestore";
 
 const app = initializeApp({
-    apiKey: "AIzaSyDYm5it0b1tMIZzHeN6PfKEek_Fuwr1nac",
-    authDomain: "ecobees-dev.firebaseapp.com",
-    projectId: "ecobees-dev",
-    storageBucket: "ecobees-dev.appspot.com",
-    messagingSenderId: "1036861135661",
-    appId: "1:1036861135661:web:db603667360280d3c251a4"
+    apiKey: "AIzaSyA0q0yLvCPK4-bHGxOoslv-QnTBSjRt22Q",
+    authDomain: "worklog-30880.firebaseapp.com",
+    projectId: "worklog-30880",
+    storageBucket: "worklog-30880w.appspot.com",
+    messagingSenderId: "1052554594401",
+    appId: "1:1052554594401:web:8eb93d731b458e37510220"
 });
 
 export default app;

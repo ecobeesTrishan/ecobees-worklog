@@ -33,7 +33,6 @@ const Form = ({ setOpenModal, setTimerOn }) => {
             createdAt: serverTimestamp(),
             status: "in progress",
             logs: [],
-            timer: 0,
             savedTimer: 0
         });
         setOpenModal(false);

@@ -1,84 +1,73 @@
 import PropTypes from "prop-types";
-import { createContext, useEffect, useState, useContext } from "react";
-import { doc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
-import { db, colRef } from "src/firebase";
-import { AuthContext } from "contexts";
+import { createContext, useEffect, useState } from "react";
 
 export const TimerContext = createContext();
 
 const TimerProvider = ({ children }) => {
-    const [timer, setTimer] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
-    const [, setStartTime] = useState(0);
-    const [tasks, setTasks] = useState([]);
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const [, setStartTime] = useState(0);
+  const [lastVisibleTime, setLastVisibleTime] = useState(Date.now());
 
-    const authContext = useContext(AuthContext);
-    const { user } = authContext;
+  useEffect(() => {
+    const savedTimer = localStorage.getItem("stopwatchTimer");
+    if (savedTimer) {
+      setTimer(parseInt(savedTimer));
+      setIsRunning(false);
+      setStartTime(Date.now() - parseInt(savedTimer) * 1000);
+    }
+  }, []);
 
-    const firebaseQuery = user?.displayName && query(colRef, where("user.id", "==", user.uid), where("status", "!=", "completed"));
-    const getTasks = async () => {
-        const snapshot = await getDocs(firebaseQuery);
-        const allDocs = snapshot.docs;
-        const tasksArr = [];
-        allDocs.map((doc) => {
-            tasksArr.push({
-                ...doc.data(), id: doc.id
-            });
-            setTasks(tasksArr);
-        });
+  useEffect(() => {
+    if (isRunning) {
+      const interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [isRunning]);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        const elapsed = Math.floor((Date.now() - lastVisibleTime) / 1000);
+        setTimer((prevTimer) => prevTimer + elapsed);
+        setIsRunning(true);
+        setLastVisibleTime(Date.now());
+      } else {
+        setIsRunning(false);
+        setLastVisibleTime(Date.now());
+      }
     };
-    user?.displayName && getTasks();
 
-    useEffect(() => {
-        const savedTimer = localStorage.getItem("stopwatchTimer");
-        if (savedTimer) {
-            setTimer(parseInt(savedTimer));
-            setIsRunning(false);
-            setStartTime(Date.now() - parseInt(savedTimer) * 1000);
-        }
+    document.addEventListener("visibilitychange", handleVisibility);
 
-        if (user?.displayName) {
-            const docRef = user?.displayName && doc(db, "tasks", tasks[0]?.id);
-            const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
-                if (docSnapshot.exists()) {
-                    setTimer(docSnapshot.data().timer);
-                }
-            });
-            return () => unsubscribe();
-        }
-    }, []);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [lastVisibleTime]);
 
-    useEffect(() => {
-        if (isRunning) {
-            const interval = setInterval(() => {
-                setTimer((prevTimer) => prevTimer + 1);
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [isRunning]);
+  useEffect(() => {
+    localStorage.setItem("stopwatchTimer", timer.toString());
+  }, [timer]);
 
-    useEffect(() => {
-        localStorage.setItem("stopwatchTimer", timer.toString());
-
-        if (user?.displayName) {
-            const docRef = doc(db, "tasks", tasks[0]?.id);
-            updateDoc(docRef, {
-                timer: timer
-            });
-        }
-    }, [timer]);
-
-    return (
-        <TimerContext.Provider value={{
-            timer, isRunning, setTimer, setIsRunning, setStartTime
-        }}>
-            {children}
-        </TimerContext.Provider>
-    );
+  return (
+    <TimerContext.Provider
+      value={{
+        timer,
+        isRunning,
+        setTimer,
+        setIsRunning,
+        setStartTime
+      }}
+    >
+      {children}
+    </TimerContext.Provider>
+  );
 };
 
 export default TimerProvider;
 
 TimerProvider.propTypes = {
-    children: PropTypes.arrayOf(PropTypes.element)
+  children: PropTypes.arrayOf(PropTypes.element)
 };
