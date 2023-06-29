@@ -32,10 +32,12 @@ const TimerProvider = ({ children }) => {
       if (document.visibilityState === "visible") {
         const elapsed = Math.floor((Date.now() - lastVisibleTime) / 1000);
         setTimer((prevTimer) => prevTimer + elapsed);
-        setIsRunning(true);
         setLastVisibleTime(Date.now());
+
+        if (!isRunning) {
+          setStartTime(Date.now() - timer * 1000);
+        }
       } else {
-        setIsRunning(false);
         setLastVisibleTime(Date.now());
       }
     };
