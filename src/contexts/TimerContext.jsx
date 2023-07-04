@@ -19,24 +19,25 @@ const TimerProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    let interval = null;
+
     if (isRunning) {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
-      return () => clearInterval(interval);
     }
+
+    return () => clearInterval(interval);
   }, [isRunning]);
 
   useEffect(() => {
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
-        const elapsed = Math.floor((Date.now() - lastVisibleTime) / 1000);
-        setTimer((prevTimer) => prevTimer + elapsed);
-        setLastVisibleTime(Date.now());
-
-        if (!isRunning) {
-          setStartTime(Date.now() - timer * 1000);
+        if (isRunning) {
+          const elapsed = Math.floor((Date.now() - lastVisibleTime) / 1000);
+          setStartTime((prevStartTime) => prevStartTime + elapsed * 1000);
         }
+        setLastVisibleTime(Date.now());
       } else {
         setLastVisibleTime(Date.now());
       }
@@ -47,11 +48,13 @@ const TimerProvider = ({ children }) => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibility);
     };
-  }, [lastVisibleTime]);
+  }, [isRunning, lastVisibleTime]);
 
   useEffect(() => {
-    localStorage.setItem("stopwatchTimer", timer.toString());
-  }, [timer]);
+    if (isRunning) {
+      localStorage.setItem("stopwatchTimer", timer.toString());
+    }
+  }, [timer, isRunning]);
 
   return (
     <TimerContext.Provider
@@ -71,5 +74,5 @@ const TimerProvider = ({ children }) => {
 export default TimerProvider;
 
 TimerProvider.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element)
+  children: PropTypes.node
 };
