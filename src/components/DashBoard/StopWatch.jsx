@@ -5,6 +5,7 @@ import { db, colRef } from "src/firebase";
 import { AuthContext, TimerContext } from "contexts";
 import { Pause, Resume, Start, Submit } from "components/Buttons";
 import { StartForm, PauseForm, SubmitForm } from "components/Forms";
+import { Success } from "components/Toasts";
 
 const StopWatch = () => {
     const { timer, isRunning, setTimer, setIsRunning, setStartTime } = useContext(TimerContext);
@@ -13,6 +14,8 @@ const StopWatch = () => {
     const [openSubmitModal, setOpenSubmitModal] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [logs, setLogs] = useState([]);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
 
     const userContext = useContext(AuthContext);
     const { user } = userContext;
@@ -43,6 +46,7 @@ const StopWatch = () => {
         if (!isRunning) {
             setIsRunning(true);
             setStartTime(Date.now() - timer * 1000);
+            setShowSuccessModal(true);
         }
     };
 
@@ -88,10 +92,14 @@ const StopWatch = () => {
             savedTimer: timer
         });
         handleReset();
+        setShowSubmitSuccessModal(true);
     };
 
     return (
         <div className="relative flex flex-col items-center justify-center gap-6 my-10 font-primary">
+            {showSuccessModal === true && <Success message={`Work has been started succesfully, Mr. ${user.displayName} 🎉`} />}
+            {showSubmitSuccessModal === true && <Success message="Your work has been submitted succesfully, Enjoy! 🏆" />}
+
             <h2 className="opacity-50">
                 Total Hours Billed
             </h2>
@@ -109,7 +117,7 @@ const StopWatch = () => {
 
                 {!isRunning && timer > 0 && <Resume onClick={handleResume} />}
 
-                {timer > 0 && <Submit onClick={() => setOpenSubmitModal(true)} />}
+                {!isRunning && timer > 0 && <Submit onClick={() => setOpenSubmitModal(true)} />}
 
             </div>
 

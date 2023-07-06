@@ -53,6 +53,7 @@ const Form = ({ setOpenPauseModal, setIsRunning }) => {
             status: "paused",
             logs: logs
         });
+        location.reload();
     };
 
     return (

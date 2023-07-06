@@ -9,6 +9,7 @@ import { db, colRef } from "src/firebase";
 import formSchema from "./formSchema";
 import { InputField, CheckBox, CloseModal } from "components/Common";
 import { AuthContext } from "contexts";
+import spinnerImage from "../../../assets/load.gif";
 
 const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
     const [tasks, setTasks] = useState([]);
@@ -126,7 +127,7 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                     className="grid grid-cols-1 mt-10 gap-x-6 gap-y-8"
                 >
 
-                    {tasks.length > 0 && (
+                    {tasks.length > 0 ? (
                         <>
                             <InputField
                                 label="Project Name"
@@ -207,7 +208,13 @@ const Form = ({ setOpenSubmitModal, handleFormSubmit }) => {
                                 </p>
                             </button>
                         </>
-                    )}
+                    )
+                        : (
+                            <div className="flex items-center justify-center">
+                                <img src={spinnerImage} alt="Loading" className="mt-16" />
+                            </div>
+                        )
+                    }
 
                     <div className="flex items-center justify-end mt-6 col-span-full gap-x-6">
                         <button
